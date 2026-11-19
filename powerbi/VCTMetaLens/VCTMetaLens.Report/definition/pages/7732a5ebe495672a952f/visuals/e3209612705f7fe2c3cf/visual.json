@@ -1,0 +1,162 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "e3209612705f7fe2c3cf",
+  "position": {
+    "x": 648.0,
+    "y": 204,
+    "z": 8000,
+    "width": 616.0,
+    "height": 500,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_player"
+                    }
+                  },
+                  "Property": "player"
+                }
+              },
+              "queryRef": "dim_player.player",
+              "nativeQueryRef": "player"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_player_map"
+                    }
+                  },
+                  "Property": "Maps joueur"
+                }
+              },
+              "queryRef": "fact_player_map.Maps joueur",
+              "nativeQueryRef": "Maps joueur"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_player_map"
+                    }
+                  },
+                  "Property": "Rating (10 maps min.)"
+                }
+              },
+              "queryRef": "fact_player_map.Rating (10 maps min.)",
+              "nativeQueryRef": "Rating (10 maps min.)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_player_map"
+                    }
+                  },
+                  "Property": "ACS moyen"
+                }
+              },
+              "queryRef": "fact_player_map.ACS moyen",
+              "nativeQueryRef": "ACS moyen"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_player_map"
+                    }
+                  },
+                  "Property": "K/D"
+                }
+              },
+              "queryRef": "fact_player_map.K/D",
+              "nativeQueryRef": "K/D"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_player_map"
+                    }
+                  },
+                  "Property": "FK/FD"
+                }
+              },
+              "queryRef": "fact_player_map.FK/FD",
+              "nativeQueryRef": "FK/FD"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_player_map"
+                    }
+                  },
+                  "Property": "HS %"
+                }
+              },
+              "queryRef": "fact_player_map.HS %",
+              "nativeQueryRef": "HS %"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_player_map"
+                  }
+                },
+                "Property": "Rating (10 maps min.)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Meilleurs joueurs'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

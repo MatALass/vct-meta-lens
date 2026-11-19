@@ -1,0 +1,99 @@
+relationship 8467d411-7fb0-519e-b67c-e456f127abb2
+	fromColumn: fact_agent_picks.tournament
+	toColumn: dim_tournament.tournament
+
+relationship ecbb1a03-ce36-5c69-97c7-cf6fd75d950a
+	fromColumn: fact_agent_picks.map
+	toColumn: dim_map.map
+
+relationship ebd1c710-b552-597a-86e1-7d930c19750a
+	fromColumn: fact_agent_picks.agent
+	toColumn: dim_agent.agent
+
+relationship 6f728f13-243d-5d00-9678-7531b2696b60
+	fromColumn: fact_map_stats.tournament
+	toColumn: dim_tournament.tournament
+
+relationship 026a7b20-048b-5dc5-82c1-39f5bd1d2e8f
+	fromColumn: fact_map_stats.map
+	toColumn: dim_map.map
+
+relationship b9364742-6b82-527f-9f9a-9c003514558e
+	fromColumn: fact_team_agent_map.tournament
+	toColumn: dim_tournament.tournament
+
+relationship c40ebe02-846a-53fa-a472-49e09a850bea
+	fromColumn: fact_team_agent_map.map
+	toColumn: dim_map.map
+
+relationship f55d69b4-4218-5f3b-9da4-ed06d64e185b
+	fromColumn: fact_team_agent_map.team
+	toColumn: dim_team.team
+
+relationship c40849a0-61a3-56df-907b-fde7412bc221
+	fromColumn: fact_team_agent_map.agent
+	toColumn: dim_agent.agent
+
+relationship 8695443c-257f-5f2c-8b4d-58a9214522ed
+	fromColumn: fact_player_map.tournament
+	toColumn: dim_tournament.tournament
+
+relationship 07f6186e-03bf-5cb2-b4f2-6f10535aef90
+	fromColumn: fact_player_map.map
+	toColumn: dim_map.map
+
+relationship 16321d0c-8250-5589-9286-33e4ffb0d19f
+	fromColumn: fact_player_map.player
+	toColumn: dim_player.player
+
+relationship 8e4a2eab-2d65-52ec-bb68-fdda9fab37a3
+	fromColumn: fact_player_map.team
+	toColumn: dim_team.team
+
+relationship a2fb3d78-5655-55e7-bbc2-420d1df2f6a0
+	fromColumn: fact_player_map.agent
+	toColumn: dim_agent.agent
+
+relationship 71f7ee88-d2a0-56e7-88d8-68b0b50625cb
+	fromColumn: fact_match_team.tournament
+	toColumn: dim_tournament.tournament
+
+relationship 7c936f04-6198-53e2-9670-a494e20d45a7
+	fromColumn: fact_match_team.team
+	toColumn: dim_team.team
+
+relationship fc9718c7-b95e-5887-9be6-1bb998d75bdb
+	fromColumn: fact_eco.tournament
+	toColumn: dim_tournament.tournament
+
+relationship e2257324-759b-5e05-9ca8-4107eff41d6c
+	fromColumn: fact_eco.map
+	toColumn: dim_map.map
+
+relationship aed5a11a-0868-56b0-9924-16c5f815e25b
+	fromColumn: fact_eco.team
+	toColumn: dim_team.team
+
+relationship 51206a13-eaa4-5fa0-9810-b1250ca9cc66
+	fromColumn: fact_round_methods.tournament
+	toColumn: dim_tournament.tournament
+
+relationship d8784a37-2c2d-5858-958e-1e56eeb4c861
+	fromColumn: fact_round_methods.map
+	toColumn: dim_map.map
+
+relationship f99ae4b0-c014-589a-8c8e-42cd44e03d27
+	fromColumn: fact_round_methods.team
+	toColumn: dim_team.team
+
+relationship 97ee3139-f063-5404-aed9-a8f38bf98d3b
+	fromColumn: fact_draft.tournament
+	toColumn: dim_tournament.tournament
+
+relationship 1abd1017-c7cf-516e-914c-6eafc275fc41
+	fromColumn: fact_draft.team
+	toColumn: dim_team.team
+
+relationship 47d38071-e1fd-5e95-a72e-ac240b2fc428
+	fromColumn: fact_draft.map
+	toColumn: dim_map.map

@@ -34,8 +34,12 @@ log = logging.getLogger(__name__)
 # Helpers de conversion
 # ---------------------------------------------------------------------------
 def snake_case(name: str) -> str:
-    """'Average Combat Score' -> 'average_combat_score'."""
-    name = re.sub(r"[^\w\s]", "", name.strip())
+    """'Average Combat Score' -> 'average_combat_score' ; 'Headshot %' -> 'headshot'.
+
+    La ponctuation est retirée AVANT le strip : sinon 'Headshot %' laisse un
+    espace final et devient 'headshot_', et les renommages ne s'appliquent pas.
+    """
+    name = re.sub(r"[^\w\s]", "", name).strip()
     return re.sub(r"\s+", "_", name).lower()
 
 
@@ -162,7 +166,7 @@ def clean_eco_rounds() -> pd.DataFrame:
 
 
 def clean_eco_stats() -> pd.DataFrame:
-    return load_raw("matches/eco_stats.csv")
+    return add_agg_flags(load_raw("matches/eco_stats.csv"))
 
 
 def clean_scores() -> pd.DataFrame:

@@ -1,0 +1,115 @@
+table fact_match_team
+	lineageTag: c49f7ba6-f182-5fb1-9e2b-07bce6c01bbb
+
+	measure Matchs = COUNTROWS ( fact_match_team )
+		formatString: #,0
+		displayFolder: Équipes
+		lineageTag: c04ef34d-9e59-5764-a3d8-a0080c37e216
+
+	measure Victoires = CALCULATE ( COUNTROWS ( fact_match_team ), fact_match_team[won] = TRUE () )
+		formatString: #,0
+		displayFolder: Équipes
+		lineageTag: dbc4281c-636f-59b8-bd18-c5810115adab
+
+	measure 'Winrate matchs %' = DIVIDE ( [Victoires], [Matchs] )
+		formatString: 0.0%
+		displayFolder: Équipes
+		lineageTag: ba3a8e0e-5155-5570-8e16-df1cafb89e50
+
+	measure 'Maps gagnées %' =
+			DIVIDE (
+			    SUM ( fact_match_team[maps_won] ),
+			    SUM ( fact_match_team[maps_won] ) + SUM ( fact_match_team[maps_lost] )
+			)
+		formatString: 0.0%
+		displayFolder: Équipes
+		lineageTag: ac70a7d9-1042-5b0a-816c-dd2bd48b1351
+
+	column tournament
+		dataType: string
+		isHidden
+		lineageTag: a266f64b-51c2-5e89-95a5-fff592737f0c
+		summarizeBy: none
+		sourceColumn: tournament
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage
+		dataType: string
+		lineageTag: d988eb0e-3b09-52c1-816e-6c9f0e1338bb
+		summarizeBy: none
+		sourceColumn: stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_type
+		dataType: string
+		lineageTag: f0caab32-e6fe-5f73-a364-0ddfbafa4cf2
+		summarizeBy: none
+		sourceColumn: match_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_name
+		dataType: string
+		lineageTag: b9264b4b-6061-5d94-8da4-1577b4ab53dd
+		summarizeBy: none
+		sourceColumn: match_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column team
+		dataType: string
+		isHidden
+		lineageTag: 77079ebc-7ad0-5aa7-82f2-649e556086ce
+		summarizeBy: none
+		sourceColumn: team
+
+		annotation SummarizationSetBy = Automatic
+
+	column opponent
+		dataType: string
+		lineageTag: 689ba351-0fe2-5d1e-9427-f1d15b4b27fe
+		summarizeBy: none
+		sourceColumn: opponent
+
+		annotation SummarizationSetBy = Automatic
+
+	column maps_won
+		dataType: int64
+		isHidden
+		lineageTag: 6f06099f-98a3-56cf-b537-fcab74db1d9b
+		summarizeBy: sum
+		sourceColumn: maps_won
+
+		annotation SummarizationSetBy = Automatic
+
+	column maps_lost
+		dataType: int64
+		isHidden
+		lineageTag: 7539acf6-c394-5540-865f-625c4379e0c1
+		summarizeBy: sum
+		sourceColumn: maps_lost
+
+		annotation SummarizationSetBy = Automatic
+
+	column won
+		dataType: boolean
+		lineageTag: 322b4ed9-f5ea-562b-bbb0-bde0e4a548ee
+		summarizeBy: none
+		sourceColumn: won
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_match_team = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_match_team.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Selected Columns" = Table.SelectColumns(#"Promoted Headers", {"tournament", "stage", "match_type", "match_name", "team", "opponent", "maps_won", "maps_lost", "won"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Selected Columns", {{"tournament", type text}, {"stage", type text}, {"match_type", type text}, {"match_name", type text}, {"team", type text}, {"opponent", type text}, {"maps_won", Int64.Type}, {"maps_lost", Int64.Type}, {"won", type logical}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

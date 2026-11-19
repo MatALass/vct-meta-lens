@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "50a3546e5449e84d7b01",
+  "position": {
+    "x": 771.2,
+    "y": 204,
+    "z": 7000,
+    "width": 492.8,
+    "height": 500,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_eco"
+                    }
+                  },
+                  "Property": "buy_category"
+                }
+              },
+              "queryRef": "fact_eco.buy_category",
+              "nativeQueryRef": "buy_category"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_eco"
+                    }
+                  },
+                  "Property": "Conversion éco %"
+                }
+              },
+              "queryRef": "fact_eco.Conversion éco %",
+              "nativeQueryRef": "Conversion éco %"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_eco"
+                  }
+                },
+                "Property": "Conversion éco %"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Taux de victoire selon l''achat'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

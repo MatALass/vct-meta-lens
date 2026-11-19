@@ -1,0 +1,22 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    name: Tests et rapport Power BI à jour
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install pandas pyarrow pytest -r powerbi/requirements.txt
+      - run: pytest -q
+      - name: Le projet PBIP versionné correspond au script
+        run: |
+          python powerbi/build_report.py
+          git diff --exit-code -- powerbi/VCTMetaLens

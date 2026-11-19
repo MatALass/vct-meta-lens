@@ -1,0 +1,67 @@
+table dim_tournament
+	lineageTag: 9409887f-284c-5f91-b46b-6595fd2916d0
+
+	column tournament
+		dataType: string
+		lineageTag: 1d4b5644-3629-5691-874f-be6b2d498d47
+		summarizeBy: none
+		sourceColumn: tournament
+
+		annotation SummarizationSetBy = Automatic
+
+	column tournament_short
+		dataType: string
+		lineageTag: 985cfe7e-c1e7-5fd7-b46b-653e11315849
+		summarizeBy: none
+		sourceColumn: tournament_short
+		sortByColumn: season_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column season_order
+		dataType: int64
+		isHidden
+		lineageTag: 13bdf2f6-2f0f-51b2-b327-4e44d0c6b054
+		summarizeBy: none
+		sourceColumn: season_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: c4401614-ddfe-51ee-b41e-3e04c9093f3d
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column tier
+		dataType: string
+		lineageTag: 21a1e29b-989c-5a8d-bd88-b24b28dcf5bc
+		summarizeBy: none
+		sourceColumn: tier
+		sortByColumn: phase_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column phase_order
+		dataType: int64
+		isHidden
+		lineageTag: a565e24a-7f7b-541e-9cb8-6f0cfb19d7a6
+		summarizeBy: none
+		sourceColumn: phase_order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_tournament = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_tournament.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Selected Columns" = Table.SelectColumns(#"Promoted Headers", {"tournament", "tournament_short", "season_order", "region", "tier", "phase_order"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Selected Columns", {{"tournament", type text}, {"tournament_short", type text}, {"season_order", Int64.Type}, {"region", type text}, {"tier", type text}, {"phase_order", Int64.Type}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,101 @@
+table fact_round_methods
+	lineageTag: cca78f73-7e9f-5162-aea4-8877b426d4db
+
+	measure 'Rounds gagnés' = CALCULATE ( COUNTROWS ( fact_round_methods ), fact_round_methods[outcome] = "Win" )
+		formatString: #,0
+		displayFolder: Maps
+		lineageTag: fefd0c50-964b-5105-895c-668f00d5ee86
+
+	measure 'Part des rounds gagnés %' = DIVIDE ( [Rounds gagnés], CALCULATE ( [Rounds gagnés], REMOVEFILTERS ( fact_round_methods[method] ) ) )
+		formatString: 0.0%
+		displayFolder: Maps
+		lineageTag: 2c6113d5-5c67-5059-93d1-47251002ea97
+
+	column tournament
+		dataType: string
+		isHidden
+		lineageTag: 50c72cdd-6933-595f-a97e-794f9a3fbca6
+		summarizeBy: none
+		sourceColumn: tournament
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage
+		dataType: string
+		lineageTag: 2c130ef8-fca4-5285-bca0-b4269c999dbb
+		summarizeBy: none
+		sourceColumn: stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_type
+		dataType: string
+		lineageTag: 7f9cc3c1-7c68-55fa-b1e6-03a33c39b7ef
+		summarizeBy: none
+		sourceColumn: match_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_name
+		dataType: string
+		lineageTag: 465e4630-11f9-5555-a643-f40f56822c67
+		summarizeBy: none
+		sourceColumn: match_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column map
+		dataType: string
+		isHidden
+		lineageTag: 3e01d523-7509-508d-bda7-8c02819ce871
+		summarizeBy: none
+		sourceColumn: map
+
+		annotation SummarizationSetBy = Automatic
+
+	column round_number
+		dataType: int64
+		isHidden
+		lineageTag: 9e159a6b-16f6-5395-8f42-dc3bcf5d16d9
+		summarizeBy: none
+		sourceColumn: round_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column team
+		dataType: string
+		isHidden
+		lineageTag: 6ac74b98-8a08-58f7-90d8-3fecc279fb35
+		summarizeBy: none
+		sourceColumn: team
+
+		annotation SummarizationSetBy = Automatic
+
+	column method
+		dataType: string
+		lineageTag: 12b23202-e2eb-5878-8193-01484ad56bb8
+		summarizeBy: none
+		sourceColumn: method
+
+		annotation SummarizationSetBy = Automatic
+
+	column outcome
+		dataType: string
+		lineageTag: b68ebfa1-5395-5d92-a55e-ddec11959cf4
+		summarizeBy: none
+		sourceColumn: outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_round_methods = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_round_methods.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Selected Columns" = Table.SelectColumns(#"Promoted Headers", {"tournament", "stage", "match_type", "match_name", "map", "round_number", "team", "method", "outcome"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Selected Columns", {{"tournament", type text}, {"stage", type text}, {"match_type", type text}, {"match_name", type text}, {"map", type text}, {"round_number", Int64.Type}, {"team", type text}, {"method", type text}, {"outcome", type text}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

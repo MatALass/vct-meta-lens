@@ -26,25 +26,25 @@ AGG_STAGE = "All Stages"
 AGG_MATCH_TYPE = "All Match Types"
 
 # ---------------------------------------------------------------------------
-# Référentiel tournois : ordre chronologique, région, tier
+# Référentiel tournois : ordre chronologique, région, tier, libellé court
 # (ordre = position dans la saison 2025, utilisé pour trier les axes temporels)
 # ---------------------------------------------------------------------------
 TOURNAMENT_META: dict[str, dict] = {
-    "VCT 2025: Americas Kickoff":    {"order": 1,  "region": "Americas",      "tier": "Kickoff"},
-    "VCT 2025: EMEA Kickoff":        {"order": 2,  "region": "EMEA",          "tier": "Kickoff"},
-    "VCT 2025: Pacific Kickoff":     {"order": 3,  "region": "Pacific",       "tier": "Kickoff"},
-    "VCT 2025: China Kickoff":       {"order": 4,  "region": "China",         "tier": "Kickoff"},
-    "Valorant Masters Bangkok 2025": {"order": 5,  "region": "International", "tier": "Masters"},
-    "VCT 2025: Americas Stage 1":    {"order": 6,  "region": "Americas",      "tier": "Stage 1"},
-    "VCT 2025: EMEA Stage 1":        {"order": 7,  "region": "EMEA",          "tier": "Stage 1"},
-    "VCT 2025: Pacific Stage 1":     {"order": 8,  "region": "Pacific",       "tier": "Stage 1"},
-    "VCT 2025: China Stage 1":       {"order": 9,  "region": "China",         "tier": "Stage 1"},
-    "Valorant Masters Toronto 2025": {"order": 10, "region": "International", "tier": "Masters"},
-    "VCT 2025: Americas Stage 2":    {"order": 11, "region": "Americas",      "tier": "Stage 2"},
-    "VCT 2025: EMEA Stage 2":        {"order": 12, "region": "EMEA",          "tier": "Stage 2"},
-    "VCT 2025: Pacific Stage 2":     {"order": 13, "region": "Pacific",       "tier": "Stage 2"},
-    "VCT 2025: China Stage 2":       {"order": 14, "region": "China",         "tier": "Stage 2"},
-    "Valorant Champions 2025":       {"order": 15, "region": "International", "tier": "Champions"},
+    "VCT 2025: Americas Kickoff":    {"order": 1,  "region": "Americas",      "tier": "Kickoff", "short": "AMER Kickoff"},
+    "VCT 2025: EMEA Kickoff":        {"order": 2,  "region": "EMEA",          "tier": "Kickoff", "short": "EMEA Kickoff"},
+    "VCT 2025: Pacific Kickoff":     {"order": 3,  "region": "Pacific",       "tier": "Kickoff", "short": "PAC Kickoff"},
+    "VCT 2025: China Kickoff":       {"order": 4,  "region": "China",         "tier": "Kickoff", "short": "CN Kickoff"},
+    "Valorant Masters Bangkok 2025": {"order": 5,  "region": "International", "tier": "Masters", "short": "Masters Bangkok"},
+    "VCT 2025: Americas Stage 1":    {"order": 6,  "region": "Americas",      "tier": "Stage 1", "short": "AMER Stage 1"},
+    "VCT 2025: EMEA Stage 1":        {"order": 7,  "region": "EMEA",          "tier": "Stage 1", "short": "EMEA Stage 1"},
+    "VCT 2025: Pacific Stage 1":     {"order": 8,  "region": "Pacific",       "tier": "Stage 1", "short": "PAC Stage 1"},
+    "VCT 2025: China Stage 1":       {"order": 9,  "region": "China",         "tier": "Stage 1", "short": "CN Stage 1"},
+    "Valorant Masters Toronto 2025": {"order": 10, "region": "International", "tier": "Masters", "short": "Masters Toronto"},
+    "VCT 2025: Americas Stage 2":    {"order": 11, "region": "Americas",      "tier": "Stage 2", "short": "AMER Stage 2"},
+    "VCT 2025: EMEA Stage 2":        {"order": 12, "region": "EMEA",          "tier": "Stage 2", "short": "EMEA Stage 2"},
+    "VCT 2025: Pacific Stage 2":     {"order": 13, "region": "Pacific",       "tier": "Stage 2", "short": "PAC Stage 2"},
+    "VCT 2025: China Stage 2":       {"order": 14, "region": "China",         "tier": "Stage 2", "short": "CN Stage 2"},
+    "Valorant Champions 2025":       {"order": 15, "region": "International", "tier": "Champions", "short": "Champions"},
 }
 
 # Ordre "phase de saison" (pour comparer les 4 régions au même moment)

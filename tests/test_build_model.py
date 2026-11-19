@@ -66,3 +66,54 @@ def test_dim_tournament_is_complete_and_ordered():
     assert len(dim) == 15
     assert dim["season_order"].is_unique
     assert dim["tournament_short"].notna().all()
+
+
+def test_case_insensitive_duplicates_are_renamed():
+    from src.build_model import case_insensitive_names, check_unique_for_powerbi
+
+    dim = pd.DataFrame({"player": ["f0rsakeN", "f0rsaken", "aspas"], "player_id": [9801.0, 12088.0, 8480.0]})
+    fact = pd.DataFrame({"player": ["f0rsakeN"] * 5 + ["f0rsaken"]})
+    out, renames = case_insensitive_names(dim, "player", [fact], "player_id")
+    assert renames == {"f0rsaken": "f0rsaken (12088)"}  # the most used spelling keeps its name
+    assert out["player"].tolist() == ["f0rsakeN", "f0rsaken (12088)", "aspas"]
+    check_unique_for_powerbi(out, "player", "dim_player")
+
+
+def test_powerbi_key_check_catches_case_and_trailing_spaces():
+    import pytest
+
+    from src.build_model import check_unique_for_powerbi
+
+    with pytest.raises(ValueError, match="clé valide"):
+        check_unique_for_powerbi(pd.DataFrame({"team": ["NRG", "nrg"]}), "team", "dim_team")
+    with pytest.raises(ValueError, match="clé valide"):
+        check_unique_for_powerbi(pd.DataFrame({"team": ["NRG", "NRG "]}), "team", "dim_team")
+
+
+def test_player_map_drops_all_maps_rows():
+    from src.build_model import build_fact_player_map
+
+    overview = pd.DataFrame(
+        {
+            "map": ["All Maps", "Ascent"],
+            "side": ["both", "both"],
+            "agents": ["jett", "jett"],
+            "kills": [40, 20],
+            "is_map_agg": [True, False],
+        }
+    )
+    out = build_fact_player_map(overview)
+    assert out["map"].tolist() == ["Ascent"]
+
+
+def test_eco_rounds_tournament_names_are_normalized():
+    from src.build_model import normalize_tournament
+    from src.config import TOURNAMENT_META
+
+    for raw in [
+        "Champions Tour 2025: EMEA Stage 1",
+        "Champions Tour 2025: Masters Bangkok",
+        "Champions Tour 2025: Americas Kickoff",
+        "Valorant Masters Toronto 2025",
+    ]:
+        assert normalize_tournament(raw) in TOURNAMENT_META

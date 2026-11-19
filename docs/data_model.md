@@ -1,9 +1,9 @@
 # Dictionnaire du modèle de données
 
-Tables de `data/model/` (générées par `src/build_model.py`). Après un passage du pipeline, `python -m src.document_model` régénère ce fichier avec les vrais nombres de lignes.
+Tables de `data/model/` (générées par `src/build_model.py`, fichier régénéré par `python -m src.document_model`).
 Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 
-## `dim_agent` : lignes à recompter
+## `dim_agent` : 27 lignes
 
 | Colonne | Type |
 |---|---|
@@ -43,7 +43,17 @@ Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 | `tier` | str |
 | `phase_order` | int64 |
 
-## `fact_agent_picks` : lignes à recompter
+## `bridge_player_stage_agent` : 9 805 lignes
+
+| Colonne | Type |
+|---|---|
+| `tournament` | str |
+| `stage` | str |
+| `match_type` | str |
+| `player` | str |
+| `agent` | str |
+
+## `fact_agent_picks` : 22 005 lignes
 
 | Colonne | Type |
 |---|---|
@@ -55,7 +65,7 @@ Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 | `pick_rate` | int64 |
 | `maps_played` | int64 |
 
-## `fact_draft` : lignes à recompter (agrégats retirés)
+## `fact_draft` : 2 988 lignes
 
 | Colonne | Type |
 |---|---|
@@ -67,7 +77,7 @@ Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 | `action` | str |
 | `map` | str |
 
-## `fact_eco` : 13 940 lignes
+## `fact_eco` : 10 020 lignes
 
 | Colonne | Type |
 |---|---|
@@ -149,7 +159,21 @@ Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 | `match_result` | str |
 | `winner` | str |
 
-## `fact_multikills` : lignes à recompter (agrégats retirés)
+## `fact_match_team` : 1 006 lignes
+
+| Colonne | Type |
+|---|---|
+| `tournament` | str |
+| `stage` | str |
+| `match_type` | str |
+| `match_name` | str |
+| `team` | str |
+| `opponent` | str |
+| `maps_won` | int64 |
+| `maps_lost` | int64 |
+| `won` | bool |
+
+## `fact_multikills` : 9 990 lignes
 
 | Colonne | Type |
 |---|---|
@@ -160,7 +184,6 @@ Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 | `map` | str |
 | `team` | str |
 | `player` | str |
-| `agent` | str |
 | `2k` | float64 |
 | `3k` | float64 |
 | `4k` | float64 |
@@ -173,8 +196,9 @@ Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 | `econ` | int64 |
 | `spike_plants` | int64 |
 | `spike_defuses` | int64 |
+| `agent` | str |
 
-## `fact_player_map` : lignes à recompter
+## `fact_player_map` : 12 760 lignes
 
 | Colonne | Type |
 |---|---|
@@ -185,7 +209,6 @@ Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 | `map` | str |
 | `player` | str |
 | `team` | str |
-| `agent` | str |
 | `rating` | float64 |
 | `average_combat_score` | float64 |
 | `kills` | float64 |
@@ -198,6 +221,7 @@ Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 | `first_kills` | float64 |
 | `first_deaths` | float64 |
 | `fkd_diff` | float64 |
+| `agent` | str |
 
 ## `fact_player_stage` : 13 705 lignes
 
@@ -227,7 +251,7 @@ Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 | `first_kills` | int64 |
 | `first_deaths` | int64 |
 
-## `fact_round_methods` : lignes à recompter (agrégats retirés)
+## `fact_round_methods` : 53 950 lignes
 
 | Colonne | Type |
 |---|---|
@@ -254,27 +278,3 @@ Granularité : lignes de détail uniquement, agrégats `All *` exclus.
 | `total_wins_by_map` | int64 |
 | `total_loss_by_map` | int64 |
 | `total_maps_played` | int64 |
-
-## `fact_match_team` : lignes à recompter
-
-| Colonne | Type |
-|---|---|
-| `tournament` | str |
-| `stage` | str |
-| `match_type` | str |
-| `match_name` | str |
-| `team` | str |
-| `opponent` | str |
-| `maps_won` | int64 |
-| `maps_lost` | int64 |
-| `won` | bool |
-
-## `bridge_player_stage_agent` : lignes à recompter
-
-| Colonne | Type |
-|---|---|
-| `tournament` | str |
-| `stage` | str |
-| `match_type` | str |
-| `player` | str |
-| `agent` | str |

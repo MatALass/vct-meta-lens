@@ -57,11 +57,12 @@ Puis ouvrir `powerbi/VCTMetaLens/VCTMetaLens.pbip` dans Power BI Desktop et cliq
 
 Le dataset VLR.gg est riche mais piégeux ; un `groupby` naïf produit des chiffres faux.
 
-1. **Agrégats mélangés au détail.** `agents_pick_rates`, `maps_stats`, `players_stats` et `teams_picked_agents` contiennent des lignes `All Maps` / `All Stages` / `All Match Types` au milieu des lignes détaillées → double comptage garanti. `clean.py` pose des flags `is_*_agg` ; `build_model.py` n'exporte que le détail dans les tables de faits.
+1. **Agrégats mélangés au détail.** `agents_pick_rates`, `maps_stats`, `players_stats` et `teams_picked_agents` contiennent des lignes `All Maps` / `All Stages` / `All Match Types` au milieu des lignes détaillées (`overview` aussi, avec une ligne « All Maps » par joueur et par match) → double comptage garanti. `clean.py` pose des flags `is_*_agg` ; `build_model.py` n'exporte que le détail dans les tables de faits.
 2. **Types texte.** Les pourcentages sont des strings (`"95%"`), les crédits aussi (`"3.9k"`), les durées mélangent `MM:SS` et `H:MM:SS`. Tout est converti en numérique.
 3. **NaN structurels.** Dans `overview`, chaque joueur a jusqu'à 3 lignes par carte (`side` = both/attack/defend) et les stats par side sont partiellement absentes. `fact_player_map` ne garde que `side == "both"` ; le détail par side reste dans `data/processed/overview.parquet`.
 4. **Pourcentages moyennés à tort.** `pick_rate` est un pourcentage par map et par stage : la moyenne simple donne autant de poids à une map jouée une fois qu'à une map jouée 40 fois. `fact_agent_picks` porte donc `maps_played` et la mesure Power BI pondère.
-5. **Référentiels incomplets.** L'ordre chronologique des tournois et les rôles des agents n'existent pas dans la source : ils sont maintenus dans `src/config.py`. Les équipes hors circuit (showmatchs) absentes de `team_mapping` sont ajoutées à `dim_team` avec un warning.
+5. **Clés texte et casse.** Power BI ignore la casse : `f0rsakeN` et `f0rsaken` sont deux joueurs dans la source mais une seule clé pour lui, et le chargement échoue. Les doublons de ce type sont renommés (`f0rsaken (12088)`) et `build_model.py` vérifie chaque dimension avant l'export.
+6. **Référentiels incomplets.** L'ordre chronologique des tournois et les rôles des agents n'existent pas dans la source : ils sont maintenus dans `src/config.py`. Les équipes hors circuit (showmatchs) absentes de `team_mapping` sont ajoutées à `dim_team` avec un warning.
 
 ## Modèle de données (étoile)
 

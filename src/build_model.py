@@ -118,6 +118,65 @@ def ensure_members(dim: pd.DataFrame, key: str, *facts: pd.DataFrame) -> pd.Data
     return dim
 
 
+def normalize_tournament(name: str) -> str:
+    """eco_rounds écrit 'Champions Tour 2025: EMEA Stage 1' au lieu de 'VCT 2025: EMEA Stage 1'.
+
+    Sans cette correction, ces lignes ne se relient pas à dim_tournament.
+    """
+    prefix = "Champions Tour 2025: "
+    if not isinstance(name, str) or not name.startswith(prefix):
+        return name
+    rest = name[len(prefix) :]
+    if rest.startswith("Masters "):
+        return f"Valorant {rest} 2025"
+    if rest == "Champions":
+        return "Valorant Champions 2025"
+    return f"VCT 2025: {rest}"
+
+
+def case_insensitive_names(
+    dim: pd.DataFrame, key: str, facts: list[pd.DataFrame], id_col: str | None = None
+) -> tuple[pd.DataFrame, dict[str, str]]:
+    """Rend les clés uniques pour Power BI, qui compare le texte sans la casse.
+
+    'f0rsakeN' et 'f0rsaken' sont deux joueurs distincts dans la source (ids 9801
+    et 12088), mais une seule et même clé pour Power BI : le chargement échoue
+    ("valeur en double"). La graphie la plus fréquente dans les faits garde son
+    nom, les autres deviennent 'f0rsaken (12088)' (ou '(2)' sans identifiant).
+    Retourne la dimension corrigée et le renommage à appliquer aux faits.
+    """
+    counts: dict[str, int] = {}
+    for fact in facts:
+        if key in fact.columns:
+            for value, n in fact[key].value_counts().items():
+                counts[value] = counts.get(value, 0) + int(n)
+
+    dim = dim.copy()
+    normalized = dim[key].astype("string").str.strip().str.lower()
+    renames: dict[str, str] = {}
+    for _, group in dim.groupby(normalized, sort=False):
+        if len(group) < 2:
+            continue
+        ranked = sorted(group.index, key=lambda i: -counts.get(dim.at[i, key], 0))
+        for n, idx in enumerate(ranked[1:], start=2):
+            old = dim.at[idx, key]
+            ident = dim.at[idx, id_col] if id_col and id_col in dim.columns else None
+            suffix = f"{int(ident)}" if ident is not None and pd.notna(ident) else f"{n}"
+            renames[old] = f"{old} ({suffix})"
+            dim.at[idx, key] = renames[old]
+    if renames:
+        log.warning("Clés identiques sans la casse dans %s, renommées : %s", key, renames)
+    return dim, renames
+
+
+def check_unique_for_powerbi(dim: pd.DataFrame, key: str, name: str) -> None:
+    """Power BI ignore la casse et les espaces de fin : vérifier avant d'exporter."""
+    normalized = dim[key].astype("string").str.rstrip().str.lower()
+    duplicated = dim.loc[normalized.duplicated(keep=False), key].tolist()
+    if duplicated or dim[key].isna().any():
+        raise ValueError(f"{name}[{key}] n'est pas une clé valide pour Power BI : {duplicated or 'valeur vide'}")
+
+
 # ---------------------------------------------------------------------------
 # Dimensions
 # ---------------------------------------------------------------------------
@@ -203,7 +262,7 @@ def build_fact_player_map(overview: pd.DataFrame) -> pd.DataFrame:
     data/processed/overview.parquet pour des analyses par side.
     """
     df = overview.loc[overview["side"] == "both"].drop(columns=["side"])
-    return single_agent(df)
+    return single_agent(detail_only(df))
 
 
 def build_fact_match_team(scores: pd.DataFrame) -> pd.DataFrame:
@@ -257,17 +316,34 @@ def main() -> None:
     bridge = explode_agents(facts["fact_player_stage"], MATCH_KEYS + ["player"])
     facts["fact_player_stage"] = facts["fact_player_stage"].drop(columns=["agents", "teams"], errors="ignore")
 
-    all_facts = list(facts.values()) + [bridge]
-    save(build_dim_tournament(), "dim_tournament")
-    save(build_dim_agent(*all_facts), "dim_agent")
-    save(build_dim_map(*all_facts), "dim_map")
+    facts["bridge_player_stage_agent"] = bridge
+    for name, fact in facts.items():
+        if "tournament" in fact.columns:
+            facts[name] = fact.assign(tournament=fact["tournament"].map(normalize_tournament))
+    unknown = {t for f in facts.values() if "tournament" in f.columns for t in f["tournament"].dropna()}
+    unknown -= set(TOURNAMENT_META)
+    if unknown:
+        log.warning("Tournois absents de config.TOURNAMENT_META : %s", sorted(unknown))
+    all_facts = list(facts.values())
     observed_teams = pd.concat([f["team"] for f in all_facts if "team" in f.columns], ignore_index=True)
-    save(build_dim_team(observed_teams), "dim_team")
-    save(build_dim_player(*all_facts), "dim_player")
+    dims = {
+        "dim_tournament": ("tournament", build_dim_tournament(), None),
+        "dim_agent": ("agent", build_dim_agent(*all_facts), None),
+        "dim_map": ("map", build_dim_map(*all_facts), None),
+        "dim_team": ("team", build_dim_team(observed_teams), "team_id"),
+        "dim_player": ("player", build_dim_player(*all_facts), "player_id"),
+    }
+    for name, (key, dim, id_col) in dims.items():
+        dim, renames = case_insensitive_names(dim, key, all_facts, id_col)
+        if renames:
+            for fname, fact in facts.items():
+                if key in fact.columns:
+                    facts[fname] = fact.assign(**{key: fact[key].replace(renames)})
+        check_unique_for_powerbi(dim, key, name)
+        save(dim, name)
 
     for name, df in facts.items():
         save(df, name)
-    save(bridge, "bridge_player_stage_agent")
 
     log.info("Modèle en étoile prêt -> %s (à importer dans Power BI)", MODEL_DIR)
 

@@ -139,7 +139,9 @@ def clean_overview() -> pd.DataFrame:
         if col in df.columns:
             df[col] = pct_to_float(df[col])
     df = df.rename(columns={"headshot": "headshot_pct"})
-    return df
+    # overview contient aussi une ligne 'All Maps' par joueur et par match (le total
+    # du match) : sans flag, les stats joueur sont comptées deux fois.
+    return add_agg_flags(df)
 
 
 def clean_players_stats() -> pd.DataFrame:

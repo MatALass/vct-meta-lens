@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "ab49fd862e8405bf5687",
   "position": {
-    "x": 964.0,
+    "x": 648.0,
     "y": 92,
     "z": 5000,
     "width": 300.0,
@@ -23,11 +23,11 @@
                       "Entity": "fact_eco"
                     }
                   },
-                  "Property": "Conversion éco %"
+                  "Property": "Pistols gagnés %"
                 }
               },
-              "queryRef": "fact_eco.Conversion éco %",
-              "nativeQueryRef": "Conversion éco %"
+              "queryRef": "fact_eco.Pistols gagnés %",
+              "nativeQueryRef": "Pistols gagnés %"
             }
           ]
         }
@@ -48,7 +48,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Conversion éco %'"
+                  "Value": "'Pistols gagnés %'"
                 }
               }
             }

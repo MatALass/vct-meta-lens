@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "23415e9c2a291de3eff5",
   "position": {
-    "x": 1044,
+    "x": 808,
     "y": 16,
     "z": 2000,
     "width": 220,
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "dim_agent"
+                      "Entity": "dim_tournament"
                     }
                   },
-                  "Property": "role"
+                  "Property": "tier"
                 }
               },
-              "queryRef": "dim_agent.role",
-              "nativeQueryRef": "role"
+              "queryRef": "dim_tournament.tier",
+              "nativeQueryRef": "tier"
             }
           ]
         }
@@ -62,7 +62,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Rôle'"
+                  "Value": "'Phase'"
                 }
               }
             }

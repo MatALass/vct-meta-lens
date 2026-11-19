@@ -1,0 +1,110 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "e35d56425b8920a7b3b2",
+  "position": {
+    "x": 16,
+    "y": 204,
+    "z": 7000,
+    "width": 405.33,
+    "height": 500,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_map"
+                    }
+                  },
+                  "Property": "map"
+                }
+              },
+              "queryRef": "dim_map.map",
+              "nativeQueryRef": "map"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_map_stats"
+                    }
+                  },
+                  "Property": "Winrate attaque %"
+                }
+              },
+              "queryRef": "fact_map_stats.Winrate attaque %",
+              "nativeQueryRef": "Winrate attaque %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_map_stats"
+                    }
+                  },
+                  "Property": "Winrate défense %"
+                }
+              },
+              "queryRef": "fact_map_stats.Winrate défense %",
+              "nativeQueryRef": "Winrate défense %"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_map_stats"
+                  }
+                },
+                "Property": "Winrate défense %"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Winrate attaque et défense par map'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,2 +1,3 @@
-# Génération du projet Power BI (python powerbi/build_report.py)
-pbip-generator @ git+https://github.com/MatALass/pbip-generator@fbf07ce09bf9111d8dd23b10e05cd5995e4412e8
+# Génération du projet Power BI (python powerbi/build_report.py).
+# Commit de la PR MatALass/pbip-generator#2 (thèmes, titres) : repasser sur main une fois fusionnée.
+pbip-generator @ git+https://github.com/MatALass/pbip-generator@906e6f17eb5c4b2b6aa2ee4717555ff3fe28d74a

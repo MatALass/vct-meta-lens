@@ -18,6 +18,7 @@ données > Paramètres > DataFolder).
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 from pbip_generator import mquery
@@ -39,6 +40,7 @@ from pbip_generator.model import (
 NAME = "VCTMetaLens"
 DEFAULT_DATA_FOLDER = "C:\\pbip\\vct-meta-lens\\data\\model\\"
 OUT_DIR = Path(__file__).resolve().parent
+THEME = OUT_DIR / "theme.json"
 
 S, I, D, B = DataType.STRING, DataType.INT64, DataType.DOUBLE, DataType.BOOLEAN
 MATCH = [("tournament", S), ("stage", S), ("match_type", S)]
@@ -303,6 +305,7 @@ def build_project(data_folder: str) -> Project:
         if col in DIM_KEYS
     ]
     project = Project(NAME, tables, relationships, culture="fr-FR", data_folder=data_folder)
+    project.theme = json.loads(THEME.read_text(encoding="utf-8"))
     project.pages = build_pages()
     return project
 
@@ -320,6 +323,10 @@ def mes(table: str, name: str) -> FieldRef:
 
 W, H, M, G = 1280, 720, 16, 16
 SLICER_H, CARD_H = 60, 96
+
+
+def page_title(text: str) -> Visual:
+    return Visual("textbox", {}, M, M, 520, SLICER_H, text=text, text_size=24)
 
 
 def slicers(*fields: tuple[FieldRef, str]) -> list[Visual]:
@@ -355,6 +362,7 @@ def build_pages() -> list[Page]:
     body_h = H - body - M
 
     meta = Page("Méta agents")
+    meta.visuals.append(page_title("Méta des agents"))
     meta.visuals += slicers((REGION, "Région"), (TIER, "Phase"), (MAP, "Map"))
     meta.visuals += cards(
         [mes("fact_agent_picks", "Agents joués"), mes("fact_map_stats", "Maps jouées"), mes("fact_team_agent_map", "Winrate compo %")],
@@ -385,6 +393,7 @@ def build_pages() -> list[Page]:
     ]
 
     maps = Page("Maps")
+    maps.visuals.append(page_title("Maps"))
     maps.visuals += slicers((REGION, "Région"), (TIER, "Phase"))
     maps.visuals += cards(
         [
@@ -434,6 +443,7 @@ def build_pages() -> list[Page]:
     ]
 
     teams = Page("Équipes")
+    teams.visuals.append(page_title("Équipes"))
     teams.visuals += slicers((REGION, "Région"), (TIER, "Phase"))
     teams.visuals += cards(
         [
@@ -478,6 +488,7 @@ def build_pages() -> list[Page]:
     ]
 
     players = Page("Joueurs")
+    players.visuals.append(page_title("Joueurs"))
     players.visuals += slicers((REGION, "Région"), (TIER, "Phase"), (ROLE, "Rôle"))
     players.visuals += cards(
         [

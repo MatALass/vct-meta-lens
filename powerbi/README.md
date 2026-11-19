@@ -53,4 +53,4 @@ Les segments Région et Phase filtrent toutes les pages, via `dim_tournament`.
 
 ## Limites connues
 
-- Le projet a été généré sans les données (le téléchargement Kaggle demande un compte). Les noms de colonnes sont vérifiés par un test contre `docs/data_model.md`, mais les valeurs de `fact_round_methods[outcome]` (`"Win"`) et `fact_eco[buy_category]` (`"Pistol"`) sont à confirmer à la première actualisation.
+- Power BI compare les clés texte sans tenir compte de la casse : `f0rsakeN` et `f0rsaken` (deux joueurs distincts dans la source) sont une seule clé pour lui. `src/build_model.py` renomme la graphie la moins fréquente (`f0rsaken (12088)`) et fait échouer le pipeline si une dimension a encore une clé en double au sens de Power BI.

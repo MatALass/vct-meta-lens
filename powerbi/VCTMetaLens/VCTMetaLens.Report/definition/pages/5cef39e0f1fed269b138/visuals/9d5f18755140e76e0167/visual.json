@@ -1,0 +1,148 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "9d5f18755140e76e0167",
+  "position": {
+    "x": 16,
+    "y": 204,
+    "z": 6000,
+    "width": 739.2,
+    "height": 500,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_team"
+                    }
+                  },
+                  "Property": "team"
+                }
+              },
+              "queryRef": "dim_team.team",
+              "nativeQueryRef": "team"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_match_team"
+                    }
+                  },
+                  "Property": "Matchs"
+                }
+              },
+              "queryRef": "fact_match_team.Matchs",
+              "nativeQueryRef": "Matchs"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_match_team"
+                    }
+                  },
+                  "Property": "Winrate matchs %"
+                }
+              },
+              "queryRef": "fact_match_team.Winrate matchs %",
+              "nativeQueryRef": "Winrate matchs %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_match_team"
+                    }
+                  },
+                  "Property": "Maps gagnées %"
+                }
+              },
+              "queryRef": "fact_match_team.Maps gagnées %",
+              "nativeQueryRef": "Maps gagnées %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_eco"
+                    }
+                  },
+                  "Property": "Pistols gagnés %"
+                }
+              },
+              "queryRef": "fact_eco.Pistols gagnés %",
+              "nativeQueryRef": "Pistols gagnés %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_eco"
+                    }
+                  },
+                  "Property": "Conversion éco %"
+                }
+              },
+              "queryRef": "fact_eco.Conversion éco %",
+              "nativeQueryRef": "Conversion éco %"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_match_team"
+                  }
+                },
+                "Property": "Winrate matchs %"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Classement des équipes'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

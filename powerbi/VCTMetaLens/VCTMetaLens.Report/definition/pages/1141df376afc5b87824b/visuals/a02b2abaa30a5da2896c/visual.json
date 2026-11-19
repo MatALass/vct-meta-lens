@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "a02b2abaa30a5da2896c",
+  "position": {
+    "x": 437.33,
+    "y": 92,
+    "z": 4000,
+    "width": 405.33,
+    "height": 96,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_map_stats"
+                    }
+                  },
+                  "Property": "Maps jouées"
+                }
+              },
+              "queryRef": "fact_map_stats.Maps jouées",
+              "nativeQueryRef": "Maps jouées"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Maps jouées'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

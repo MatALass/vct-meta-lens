@@ -1,0 +1,23 @@
+table dim_map
+	lineageTag: 1005976b-66ca-5554-864b-49160977151a
+
+	column map
+		dataType: string
+		lineageTag: c32d0b63-25f8-5059-aad8-38e3abd0e1fd
+		summarizeBy: none
+		sourceColumn: map
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_map = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_map.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Selected Columns" = Table.SelectColumns(#"Promoted Headers", {"map"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Selected Columns", {{"map", type text}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

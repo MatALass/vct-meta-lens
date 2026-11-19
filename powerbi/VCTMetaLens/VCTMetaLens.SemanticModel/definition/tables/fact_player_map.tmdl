@@ -1,0 +1,225 @@
+table fact_player_map
+	lineageTag: fec6dab6-bf2a-50e3-8947-779ddac9deb6
+
+	measure 'Maps joueur' = COUNTROWS ( fact_player_map )
+		formatString: #,0
+		displayFolder: Joueurs
+		lineageTag: 655f71cb-b745-559e-8195-21d322cb88ef
+
+	measure 'Rating moyen' = AVERAGE ( fact_player_map[rating] )
+		formatString: 0.00
+		displayFolder: Joueurs
+		lineageTag: 0a95b6db-ef21-52de-8470-1f1448ac57a7
+
+	measure 'ACS moyen' = AVERAGE ( fact_player_map[average_combat_score] )
+		formatString: 0
+		displayFolder: Joueurs
+		lineageTag: 255365ea-1971-55e9-a57f-aa4126ea4427
+
+	measure 'ADR moyen' = AVERAGE ( fact_player_map[average_damage_per_round] )
+		formatString: 0
+		displayFolder: Joueurs
+		lineageTag: 54196cc6-eeda-597e-9ecb-5a9aeba439bd
+
+	measure 'K/D' = DIVIDE ( SUM ( fact_player_map[kills] ), SUM ( fact_player_map[deaths] ) )
+		formatString: 0.00
+		displayFolder: Joueurs
+		lineageTag: 0a3ea437-b274-5fe2-8eed-c03e707fcf80
+
+	measure 'FK/FD' = DIVIDE ( SUM ( fact_player_map[first_kills] ), SUM ( fact_player_map[first_deaths] ) )
+		formatString: 0.00
+		displayFolder: Joueurs
+		lineageTag: 483e7fba-065d-5a5f-a8cb-23f67490e90a
+
+	measure 'HS %' = AVERAGE ( fact_player_map[headshot_pct] ) / 100
+		formatString: 0.0%
+		displayFolder: Joueurs
+		lineageTag: 5aeb49ae-d83e-54a2-a06f-e2907b3a20b0
+
+	measure 'KAST %' = AVERAGE ( fact_player_map[kast_pct] ) / 100
+		formatString: 0.0%
+		displayFolder: Joueurs
+		lineageTag: 56ba80e4-5701-5b8f-880d-d47d196435fa
+
+	/// Vide sous 10 maps : évite qu'un remplaçant à 2 maps domine le classement.
+	measure 'Rating (10 maps min.)' = IF ( [Maps joueur] >= 10, [Rating moyen] )
+		formatString: 0.00
+		displayFolder: Joueurs
+		lineageTag: 44324a18-4b82-5444-93ff-30cf58a1e83f
+
+	measure 'ACS (10 maps min.)' = IF ( [Maps joueur] >= 10, [ACS moyen] )
+		formatString: 0
+		displayFolder: Joueurs
+		lineageTag: 2e87ca22-ab7c-5135-8351-603b44b2f244
+
+	column tournament
+		dataType: string
+		isHidden
+		lineageTag: b0551aec-5c1e-5179-887d-ed9997e31640
+		summarizeBy: none
+		sourceColumn: tournament
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage
+		dataType: string
+		lineageTag: 749fcda7-2ab0-5f0b-8929-e9bf1a4536ed
+		summarizeBy: none
+		sourceColumn: stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_type
+		dataType: string
+		lineageTag: d17256c4-9b1c-57d4-af3a-60a5ad35dd80
+		summarizeBy: none
+		sourceColumn: match_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_name
+		dataType: string
+		lineageTag: adb12422-1b12-5b45-bcfd-df5b9b4d963b
+		summarizeBy: none
+		sourceColumn: match_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column map
+		dataType: string
+		isHidden
+		lineageTag: c6188b1a-7e02-5ee8-b1b3-5a49462aca1d
+		summarizeBy: none
+		sourceColumn: map
+
+		annotation SummarizationSetBy = Automatic
+
+	column player
+		dataType: string
+		isHidden
+		lineageTag: 4422b8e8-8f91-5391-b868-2d6f7193cf8f
+		summarizeBy: none
+		sourceColumn: player
+
+		annotation SummarizationSetBy = Automatic
+
+	column team
+		dataType: string
+		isHidden
+		lineageTag: 1b1598ba-0930-5ed4-891c-3ea449eb83c4
+		summarizeBy: none
+		sourceColumn: team
+
+		annotation SummarizationSetBy = Automatic
+
+	column agent
+		dataType: string
+		isHidden
+		lineageTag: e5ecbd17-22f0-562f-8ed1-87f440f26230
+		summarizeBy: none
+		sourceColumn: agent
+
+		annotation SummarizationSetBy = Automatic
+
+	column rating
+		dataType: double
+		isHidden
+		lineageTag: bf3c1af3-e96e-569b-8dc2-15f6536ba6ae
+		summarizeBy: sum
+		sourceColumn: rating
+
+		annotation SummarizationSetBy = Automatic
+
+	column average_combat_score
+		dataType: double
+		isHidden
+		lineageTag: 4a8bd89b-01fb-5696-9b0d-e377d2d92899
+		summarizeBy: sum
+		sourceColumn: average_combat_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column kills
+		dataType: double
+		isHidden
+		lineageTag: 296d6b39-03c0-5587-bcd9-29fe16381353
+		summarizeBy: sum
+		sourceColumn: kills
+
+		annotation SummarizationSetBy = Automatic
+
+	column deaths
+		dataType: double
+		isHidden
+		lineageTag: 6ec6dc10-0fd2-5eb0-802e-b53dc4aecbab
+		summarizeBy: sum
+		sourceColumn: deaths
+
+		annotation SummarizationSetBy = Automatic
+
+	column assists
+		dataType: double
+		isHidden
+		lineageTag: 449abeff-407c-51c8-9143-f5f34e78db85
+		summarizeBy: sum
+		sourceColumn: assists
+
+		annotation SummarizationSetBy = Automatic
+
+	column average_damage_per_round
+		dataType: double
+		isHidden
+		lineageTag: 56a36dce-9900-5ca9-b33e-9a52c18984bc
+		summarizeBy: sum
+		sourceColumn: average_damage_per_round
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_kills
+		dataType: double
+		isHidden
+		lineageTag: 1cdf8444-cc06-54b3-b761-31a1c5a7ac9e
+		summarizeBy: sum
+		sourceColumn: first_kills
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_deaths
+		dataType: double
+		isHidden
+		lineageTag: dbb5fcc4-cebb-5d58-8e3c-456310cbcb23
+		summarizeBy: sum
+		sourceColumn: first_deaths
+
+		annotation SummarizationSetBy = Automatic
+
+	column headshot_pct
+		dataType: double
+		isHidden
+		lineageTag: 9fde08dc-603c-5ac5-938d-13224a46ce21
+		summarizeBy: sum
+		sourceColumn: headshot_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column kast_pct
+		dataType: double
+		isHidden
+		lineageTag: 3630e56a-8c25-5dad-b2e7-b2c091a1d8f9
+		summarizeBy: sum
+		sourceColumn: kast_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_player_map = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_player_map.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Selected Columns" = Table.SelectColumns(#"Promoted Headers", {"tournament", "stage", "match_type", "match_name", "map", "player", "team", "agent", "rating", "average_combat_score", "kills", "deaths", "assists", "average_damage_per_round", "first_kills", "first_deaths", "headshot_pct", "kast_pct"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Selected Columns", {{"tournament", type text}, {"stage", type text}, {"match_type", type text}, {"match_name", type text}, {"map", type text}, {"player", type text}, {"team", type text}, {"agent", type text}, {"rating", type number}, {"average_combat_score", type number}, {"kills", type number}, {"deaths", type number}, {"assists", type number}, {"average_damage_per_round", type number}, {"first_kills", type number}, {"first_deaths", type number}, {"headshot_pct", type number}, {"kast_pct", type number}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

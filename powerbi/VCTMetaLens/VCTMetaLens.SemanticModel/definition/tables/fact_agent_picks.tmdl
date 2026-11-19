@@ -1,0 +1,91 @@
+table fact_agent_picks
+	lineageTag: d4f275a9-0a6d-5e79-acda-5c72b2d52aea
+
+	/// Pick rate pondéré par le nombre de maps jouées (jamais une moyenne simple des pourcentages).
+	measure 'Pick rate %' =
+			DIVIDE (
+			    SUMX ( fact_agent_picks, fact_agent_picks[pick_rate] * fact_agent_picks[maps_played] ),
+			    SUM ( fact_agent_picks[maps_played] )
+			) / 100
+		formatString: 0.0%
+		displayFolder: Méta agents
+		lineageTag: 1ce3d000-f9d9-50a1-b92b-e028a92b13eb
+
+	measure 'Agents joués' = CALCULATE ( DISTINCTCOUNT ( fact_agent_picks[agent] ), fact_agent_picks[pick_rate] > 0 )
+		formatString: 0
+		displayFolder: Méta agents
+		lineageTag: 4250f6df-8c15-5191-8877-0b66edd81637
+
+	column tournament
+		dataType: string
+		isHidden
+		lineageTag: 29640236-27fc-5565-a5e6-ad51046c353f
+		summarizeBy: none
+		sourceColumn: tournament
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage
+		dataType: string
+		lineageTag: 5a7032ac-0d8d-5dd3-8ed8-2c4a6596c9d5
+		summarizeBy: none
+		sourceColumn: stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_type
+		dataType: string
+		lineageTag: 8e05835b-8d12-506e-92d1-e11511f70156
+		summarizeBy: none
+		sourceColumn: match_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column map
+		dataType: string
+		isHidden
+		lineageTag: b1dc0759-fe97-5435-bd83-2268876c2dd8
+		summarizeBy: none
+		sourceColumn: map
+
+		annotation SummarizationSetBy = Automatic
+
+	column agent
+		dataType: string
+		isHidden
+		lineageTag: 1726e502-731b-55cb-91fb-ffb0414c3f41
+		summarizeBy: none
+		sourceColumn: agent
+
+		annotation SummarizationSetBy = Automatic
+
+	column pick_rate
+		dataType: double
+		isHidden
+		lineageTag: 7540c6e6-4e95-5852-b480-57a2fc315b2a
+		summarizeBy: sum
+		sourceColumn: pick_rate
+
+		annotation SummarizationSetBy = Automatic
+
+	column maps_played
+		dataType: int64
+		isHidden
+		lineageTag: 60e661b3-a8bf-5b29-a63e-06e0d030710b
+		summarizeBy: sum
+		sourceColumn: maps_played
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_agent_picks = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_agent_picks.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Selected Columns" = Table.SelectColumns(#"Promoted Headers", {"tournament", "stage", "match_type", "map", "agent", "pick_rate", "maps_played"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Selected Columns", {{"tournament", type text}, {"stage", type text}, {"match_type", type text}, {"map", type text}, {"agent", type text}, {"pick_rate", type number}, {"maps_played", Int64.Type}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

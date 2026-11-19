@@ -1,0 +1,4 @@
+expression DataFolder = "C:\pbip\vct-meta-lens\data\model\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 49b5675d-93f2-50b2-a3db-a24cc6c3e356
+
+	annotation PBI_ResultType = Text

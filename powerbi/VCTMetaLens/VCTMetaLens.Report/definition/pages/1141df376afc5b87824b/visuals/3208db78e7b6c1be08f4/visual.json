@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "3208db78e7b6c1be08f4",
+  "position": {
+    "x": 858.67,
+    "y": 92,
+    "z": 5000,
+    "width": 405.33,
+    "height": 96,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_team_agent_map"
+                    }
+                  },
+                  "Property": "Winrate compo %"
+                }
+              },
+              "queryRef": "fact_team_agent_map.Winrate compo %",
+              "nativeQueryRef": "Winrate compo %"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Winrate compo %'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -32,7 +32,7 @@ log = logging.getLogger(__name__)
 
 def main() -> None:
     if RAW_DIR.exists() and any(RAW_DIR.rglob("*.csv")):
-        log.info("Données déjà présentes dans %s — rien à faire.", RAW_DIR)
+        log.info("Données déjà présentes dans %s : rien à faire.", RAW_DIR)
         log.info("Supprimez le dossier pour forcer un re-téléchargement.")
         return
 
@@ -54,7 +54,7 @@ def main() -> None:
     RAW_DIR.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(src_2025, RAW_DIR, dirs_exist_ok=True)
     n_csv = len(list(RAW_DIR.rglob("*.csv")))
-    log.info("OK — %d fichiers CSV copiés dans %s", n_csv, RAW_DIR)
+    log.info("OK : %d fichiers CSV copiés dans %s", n_csv, RAW_DIR)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,2 @@
+# Génération du projet Power BI (python powerbi/build_report.py)
+pbip-generator @ git+https://github.com/MatALass/pbip-generator@fbf07ce09bf9111d8dd23b10e05cd5995e4412e8

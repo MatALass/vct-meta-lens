@@ -1,0 +1,91 @@
+table fact_team_agent_map
+	lineageTag: 0489aaa1-6ba8-540a-bca7-c64093c2881e
+
+	/// Part des maps gagnées quand l'équipe joue l'agent.
+	measure 'Winrate compo %' = DIVIDE ( SUM ( fact_team_agent_map[total_wins_by_map] ), SUM ( fact_team_agent_map[total_maps_played] ) )
+		formatString: 0.0%
+		displayFolder: Méta agents
+		lineageTag: 1858b93c-7950-569f-94b9-131622517769
+
+	column tournament
+		dataType: string
+		isHidden
+		lineageTag: 783a835d-8301-56b7-b108-e873105d5221
+		summarizeBy: none
+		sourceColumn: tournament
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage
+		dataType: string
+		lineageTag: ae977355-c9fa-59c7-8b36-a66e8a301a2e
+		summarizeBy: none
+		sourceColumn: stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_type
+		dataType: string
+		lineageTag: 1e18cddd-2558-5764-b44b-9d7c1d5aa8b7
+		summarizeBy: none
+		sourceColumn: match_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column map
+		dataType: string
+		isHidden
+		lineageTag: 20259259-18ce-5fd5-9a8a-876d42bf3599
+		summarizeBy: none
+		sourceColumn: map
+
+		annotation SummarizationSetBy = Automatic
+
+	column team
+		dataType: string
+		isHidden
+		lineageTag: ebd3c539-a1eb-5d82-abf4-76a20e6f4f64
+		summarizeBy: none
+		sourceColumn: team
+
+		annotation SummarizationSetBy = Automatic
+
+	column agent
+		dataType: string
+		isHidden
+		lineageTag: 71e367e0-b99f-504e-94d7-590eb93c0353
+		summarizeBy: none
+		sourceColumn: agent
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_wins_by_map
+		dataType: int64
+		isHidden
+		lineageTag: e81edff6-a1f7-5052-a360-7e6126131434
+		summarizeBy: sum
+		sourceColumn: total_wins_by_map
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_maps_played
+		dataType: int64
+		isHidden
+		lineageTag: 16ad443d-fd48-548e-b704-cc52469701bf
+		summarizeBy: sum
+		sourceColumn: total_maps_played
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_team_agent_map = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_team_agent_map.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Selected Columns" = Table.SelectColumns(#"Promoted Headers", {"tournament", "stage", "match_type", "map", "team", "agent", "total_wins_by_map", "total_maps_played"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Selected Columns", {{"tournament", type text}, {"stage", type text}, {"match_type", type text}, {"map", type text}, {"team", type text}, {"agent", type text}, {"total_wins_by_map", Int64.Type}, {"total_maps_played", Int64.Type}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

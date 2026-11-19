@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "af84fb209e31baf3af4f",
   "position": {
-    "x": 332.0,
+    "x": 16.0,
     "y": 92,
     "z": 3000,
     "width": 300.0,
@@ -23,11 +23,11 @@
                       "Entity": "fact_match_team"
                     }
                   },
-                  "Property": "Winrate matchs %"
+                  "Property": "Matchs"
                 }
               },
-              "queryRef": "fact_match_team.Winrate matchs %",
-              "nativeQueryRef": "Winrate matchs %"
+              "queryRef": "fact_match_team.Matchs",
+              "nativeQueryRef": "Matchs"
             }
           ]
         }
@@ -48,7 +48,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Winrate matchs %'"
+                  "Value": "'Matchs'"
                 }
               }
             }

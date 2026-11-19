@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "0580b3f1ebee6626281c",
+  "position": {
+    "x": 964.0,
+    "y": 92,
+    "z": 6000,
+    "width": 300.0,
+    "height": 96,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_map_stats"
+                    }
+                  },
+                  "Property": "Écart DEF - ATK (pts)"
+                }
+              },
+              "queryRef": "fact_map_stats.Écart DEF - ATK (pts)",
+              "nativeQueryRef": "Écart DEF - ATK (pts)"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Écart DEF - ATK (pts)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

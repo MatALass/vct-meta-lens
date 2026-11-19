@@ -1,0 +1,114 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "9ac5c211cc70d7c8eab9",
+  "position": {
+    "x": 858.67,
+    "y": 204,
+    "z": 9000,
+    "width": 405.33,
+    "height": 500,
+    "tabOrder": 9000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_map"
+                    }
+                  },
+                  "Property": "map"
+                }
+              },
+              "queryRef": "dim_map.map",
+              "nativeQueryRef": "map"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_draft"
+                    }
+                  },
+                  "Property": "Actions de draft"
+                }
+              },
+              "queryRef": "fact_draft.Actions de draft",
+              "nativeQueryRef": "Actions de draft"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_draft"
+                    }
+                  },
+                  "Property": "action"
+                }
+              },
+              "queryRef": "fact_draft.action",
+              "nativeQueryRef": "action"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_draft"
+                  }
+                },
+                "Property": "Actions de draft"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Picks et bans par map'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

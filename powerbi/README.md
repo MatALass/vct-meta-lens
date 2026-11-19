@@ -19,7 +19,7 @@ Pour un fichier unique à partager : Fichier > Enregistrer sous > `.pbix`.
 
 ## Modifier le rapport
 
-Modifier `build_report.py`, puis :
+Modifier `build_report.py` (ou `theme.json` pour les couleurs), puis :
 
 ```powershell
 pip install -r powerbi/requirements.txt
@@ -39,6 +39,10 @@ La CI régénère le projet et échoue si le dossier `VCTMetaLens/` ne correspon
 
 Les segments Région et Phase filtrent toutes les pages, via `dim_tournament`.
 
+## Thème
+
+`theme.json` : rouge Valorant pour l'accent, fond sable clair, cartes à bordure rouge, en-têtes de tableau sombres. Il est intégré au projet, donc le rapport s'ouvre déjà en couleurs.
+
 ## Choix de modélisation
 
 - **Pick rate pondéré.** `pick_rate` est un pourcentage par tournoi, stage, type de match et map. Une moyenne simple donnerait le même poids à une map jouée une fois et à une map jouée 40 fois, donc la mesure `Pick rate %` pondère par `maps_played`.
@@ -50,4 +54,3 @@ Les segments Région et Phase filtrent toutes les pages, via `dim_tournament`.
 ## Limites connues
 
 - Le projet a été généré sans les données (le téléchargement Kaggle demande un compte). Les noms de colonnes sont vérifiés par un test contre `docs/data_model.md`, mais les valeurs de `fact_round_methods[outcome]` (`"Win"`) et `fact_eco[buy_category]` (`"Pistol"`) sont à confirmer à la première actualisation.
-- Pas de thème personnalisé : pbip-generator v0.1 ne les gère pas encore.

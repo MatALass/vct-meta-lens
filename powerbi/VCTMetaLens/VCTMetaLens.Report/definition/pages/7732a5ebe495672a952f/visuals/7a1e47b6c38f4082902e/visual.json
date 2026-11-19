@@ -1,0 +1,114 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "7a1e47b6c38f4082902e",
+  "position": {
+    "x": 16,
+    "y": 204,
+    "z": 8000,
+    "width": 616.0,
+    "height": 500,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_player"
+                    }
+                  },
+                  "Property": "player"
+                }
+              },
+              "queryRef": "dim_player.player",
+              "nativeQueryRef": "player"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_player_map"
+                    }
+                  },
+                  "Property": "ACS (10 maps min.)"
+                }
+              },
+              "queryRef": "fact_player_map.ACS (10 maps min.)",
+              "nativeQueryRef": "ACS (10 maps min.)"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_player_map"
+                    }
+                  },
+                  "Property": "Rating (10 maps min.)"
+                }
+              },
+              "queryRef": "fact_player_map.Rating (10 maps min.)",
+              "nativeQueryRef": "Rating (10 maps min.)"
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_player_map"
+                    }
+                  },
+                  "Property": "Maps joueur"
+                }
+              },
+              "queryRef": "fact_player_map.Maps joueur",
+              "nativeQueryRef": "Maps joueur"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Rating et ACS (10 maps minimum)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

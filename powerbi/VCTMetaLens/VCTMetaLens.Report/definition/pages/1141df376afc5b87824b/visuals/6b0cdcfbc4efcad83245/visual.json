@@ -1,0 +1,114 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "6b0cdcfbc4efcad83245",
+  "position": {
+    "x": 16,
+    "y": 204,
+    "z": 7000,
+    "width": 616.0,
+    "height": 500,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_tournament"
+                    }
+                  },
+                  "Property": "tournament_short"
+                }
+              },
+              "queryRef": "dim_tournament.tournament_short",
+              "nativeQueryRef": "tournament_short"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_agent_picks"
+                    }
+                  },
+                  "Property": "Pick rate %"
+                }
+              },
+              "queryRef": "fact_agent_picks.Pick rate %",
+              "nativeQueryRef": "Pick rate %"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_agent"
+                    }
+                  },
+                  "Property": "role"
+                }
+              },
+              "queryRef": "dim_agent.role",
+              "nativeQueryRef": "role"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dim_tournament"
+                  }
+                },
+                "Property": "tournament_short"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Pick rate par rôle au fil de la saison'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

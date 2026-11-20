@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "99552c1dd736c0ad9ca9",
+  "position": {
+    "x": 268.8,
+    "y": 92,
+    "z": 5000,
+    "width": 236.8,
+    "height": 96,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_multikills"
+                    }
+                  },
+                  "Property": "Clutchs 1v3+"
+                }
+              },
+              "queryRef": "fact_multikills.Clutchs 1v3+",
+              "nativeQueryRef": "Clutchs 1v3+"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Clutchs 1v3+'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -8,7 +8,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBI_QueryOrder = ["DataFolder", "dim_tournament", "dim_agent", "dim_map", "dim_team", "dim_player", "fact_agent_picks", "fact_map_stats", "fact_team_agent_map", "fact_player_map", "fact_match_team", "fact_eco", "fact_round_methods", "fact_draft"]
+annotation PBI_QueryOrder = ["DataFolder", "dim_tournament", "dim_agent", "dim_map", "dim_team", "dim_player", "fact_agent_picks", "fact_map_stats", "fact_team_agent_map", "fact_player_map", "fact_match_team", "fact_eco", "fact_round_methods", "fact_draft", "fact_multikills", "fact_map_score"]
 
 ref table dim_tournament
 ref table dim_agent
@@ -23,3 +23,5 @@ ref table fact_match_team
 ref table fact_eco
 ref table fact_round_methods
 ref table fact_draft
+ref table fact_multikills
+ref table fact_map_score

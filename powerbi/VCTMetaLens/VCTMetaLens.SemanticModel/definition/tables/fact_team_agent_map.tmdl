@@ -1,6 +1,12 @@
 table fact_team_agent_map
 	lineageTag: 0489aaa1-6ba8-540a-bca7-c64093c2881e
 
+	/// Maps où l'équipe a aligné l'agent (une map compte une fois par agent de la compo).
+	measure 'Maps avec l''agent' = SUM ( fact_team_agent_map[total_maps_played] )
+		formatString: #,0
+		displayFolder: Méta agents
+		lineageTag: e8a69d93-bd92-5d72-bbcd-c62f335717a2
+
 	/// Part des maps gagnées quand l'équipe joue l'agent.
 	measure 'Winrate compo %' = DIVIDE ( SUM ( fact_team_agent_map[total_wins_by_map] ), SUM ( fact_team_agent_map[total_maps_played] ) )
 		formatString: 0.0%

@@ -46,10 +46,8 @@
             }
           }
         }
-      ]
-    },
-    "visualContainerObjects": {
-      "title": [
+      ],
+      "header": [
         {
           "properties": {
             "show": {
@@ -63,6 +61,21 @@
               "expr": {
                 "Literal": {
                   "Value": "'Rôle'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

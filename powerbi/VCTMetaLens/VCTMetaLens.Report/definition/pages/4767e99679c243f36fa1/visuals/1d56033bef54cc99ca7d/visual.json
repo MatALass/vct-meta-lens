@@ -1,0 +1,162 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "1d56033bef54cc99ca7d",
+  "position": {
+    "x": 16,
+    "y": 204,
+    "z": 9000,
+    "width": 739.2,
+    "height": 500,
+    "tabOrder": 9000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_player"
+                    }
+                  },
+                  "Property": "player"
+                }
+              },
+              "queryRef": "dim_player.player",
+              "nativeQueryRef": "player"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_multikills"
+                    }
+                  },
+                  "Property": "Clutchs gagnés"
+                }
+              },
+              "queryRef": "fact_multikills.Clutchs gagnés",
+              "nativeQueryRef": "Clutchs gagnés"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_multikills"
+                    }
+                  },
+                  "Property": "Clutchs 1v3+"
+                }
+              },
+              "queryRef": "fact_multikills.Clutchs 1v3+",
+              "nativeQueryRef": "Clutchs 1v3+"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_multikills"
+                    }
+                  },
+                  "Property": "Clutchs par map"
+                }
+              },
+              "queryRef": "fact_multikills.Clutchs par map",
+              "nativeQueryRef": "Clutchs par map"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_multikills"
+                    }
+                  },
+                  "Property": "3K"
+                }
+              },
+              "queryRef": "fact_multikills.3K",
+              "nativeQueryRef": "3K"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_multikills"
+                    }
+                  },
+                  "Property": "4K"
+                }
+              },
+              "queryRef": "fact_multikills.4K",
+              "nativeQueryRef": "4K"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_multikills"
+                    }
+                  },
+                  "Property": "Aces"
+                }
+              },
+              "queryRef": "fact_multikills.Aces",
+              "nativeQueryRef": "Aces"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_multikills"
+                  }
+                },
+                "Property": "Clutchs gagnés"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Joueurs décisifs'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

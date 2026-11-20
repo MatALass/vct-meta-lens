@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "05eec7f2f910601c7e1e",
+  "position": {
+    "x": 1027.2,
+    "y": 92,
+    "z": 8000,
+    "width": 236.8,
+    "height": 96,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_multikills"
+                    }
+                  },
+                  "Property": "Spikes plantés"
+                }
+              },
+              "queryRef": "fact_multikills.Spikes plantés",
+              "nativeQueryRef": "Spikes plantés"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Spikes plantés'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

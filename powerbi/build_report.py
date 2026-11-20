@@ -135,6 +135,41 @@ SCHEMA: dict[str, tuple[TableRole, list[tuple[str, DataType]]]] = {
         TableRole.FACT,
         MATCH + [("match_name", S), ("team", S), ("action", S), ("map", S)],
     ),
+    "fact_multikills": (
+        TableRole.FACT,
+        MATCH
+        + [
+            ("match_name", S),
+            ("map", S),
+            ("team", S),
+            ("player", S),
+            ("agent", S),
+            ("2k", D),
+            ("3k", D),
+            ("4k", D),
+            ("5k", D),
+            ("1v1", D),
+            ("1v2", D),
+            ("1v3", D),
+            ("1v4", D),
+            ("1v5", D),
+            ("spike_plants", I),
+            ("spike_defuses", I),
+        ],
+    ),
+    "fact_map_score": (
+        TableRole.FACT,
+        MATCH
+        + [
+            ("match_name", S),
+            ("map", S),
+            ("team_a_score", I),
+            ("team_b_score", I),
+            ("team_a_overtime_score", D),
+            ("team_b_overtime_score", D),
+            ("duration_seconds", D),
+        ],
+    ),
 }
 
 # Chaque fait est relié aux dimensions dont il porte la clé.
@@ -237,7 +272,74 @@ MEASURES: dict[str, list[Measure]] = {
             "Équipes",
         ),
     ],
+    "fact_multikills": [
+        Measure(
+            "Clutchs gagnés",
+            "SUM ( fact_multikills[1v1] ) + SUM ( fact_multikills[1v2] ) + SUM ( fact_multikills[1v3] )\n"
+            "    + SUM ( fact_multikills[1v4] ) + SUM ( fact_multikills[1v5] )",
+            "#,0",
+            "Duels",
+        ),
+        Measure(
+            "Clutchs 1v3+",
+            "SUM ( fact_multikills[1v3] ) + SUM ( fact_multikills[1v4] ) + SUM ( fact_multikills[1v5] )",
+            "#,0",
+            "Duels",
+        ),
+        Measure(
+            "Clutchs par map",
+            "DIVIDE ( [Clutchs gagnés], COUNTROWS ( fact_multikills ) )",
+            "0.00",
+            "Duels",
+            "Une ligne de fact_multikills = un joueur sur une map.",
+        ),
+        Measure("2K", "SUM ( fact_multikills[2k] )", "#,0", "Duels"),
+        Measure("3K", "SUM ( fact_multikills[3k] )", "#,0", "Duels"),
+        Measure("4K", "SUM ( fact_multikills[4k] )", "#,0", "Duels"),
+        Measure("Aces", "SUM ( fact_multikills[5k] )", "#,0", "Duels"),
+        Measure("Multikills 3K+", "[3K] + [4K] + [Aces]", "#,0", "Duels"),
+        Measure("Spikes plantés", "SUM ( fact_multikills[spike_plants] )", "#,0", "Duels"),
+        Measure("Spikes désamorcés", "SUM ( fact_multikills[spike_defuses] )", "#,0", "Duels"),
+    ],
+    "fact_map_score": [
+        Measure("Maps (scores)", "COUNTROWS ( fact_map_score )", "#,0", "Maps"),
+        Measure("Durée moyenne (min)", "AVERAGE ( fact_map_score[duration_seconds] ) / 60", "0.0", "Maps"),
+        Measure(
+            "Prolongations %",
+            "DIVIDE (\n"
+            "    COUNTROWS (\n"
+            "        FILTER (\n"
+            "            fact_map_score,\n"
+            "            fact_map_score[team_a_overtime_score] + fact_map_score[team_b_overtime_score] > 0\n"
+            "        )\n"
+            "    ),\n"
+            "    [Maps (scores)]\n"
+            ")",
+            "0.0%",
+            "Maps",
+            "Part des maps allées en prolongation (au moins un round d'overtime).",
+        ),
+        Measure(
+            "Écart de score moyen",
+            "AVERAGEX ( fact_map_score, ABS ( fact_map_score[team_a_score] - fact_map_score[team_b_score] ) )",
+            "0.0",
+            "Maps",
+        ),
+        Measure(
+            "Rounds par map",
+            "AVERAGEX ( fact_map_score, fact_map_score[team_a_score] + fact_map_score[team_b_score] )",
+            "0.0",
+            "Maps",
+        ),
+    ],
     "fact_team_agent_map": [
+        Measure(
+            "Maps avec l'agent",
+            "SUM ( fact_team_agent_map[total_maps_played] )",
+            "#,0",
+            "Méta agents",
+            "Maps où l'équipe a aligné l'agent (une map compte une fois par agent de la compo).",
+        ),
         Measure(
             "Winrate compo %",
             "DIVIDE ( SUM ( fact_team_agent_map[total_wins_by_map] ), SUM ( fact_team_agent_map[total_maps_played] ) )",
@@ -535,7 +637,186 @@ def build_pages() -> list[Page]:
             sort_by=mes("fact_player_map", "Rating (10 maps min.)"),
         ),
     ]
-    return [meta, maps, teams, players]
+    duels = Page("Duels et clutchs")
+    duels.visuals.append(page_title("Duels et clutchs"))
+    duels.visuals += slicers((REGION, "Région"), (TIER, "Phase"), (ROLE, "Rôle"))
+    duels.visuals += cards(
+        [
+            mes("fact_multikills", "Clutchs gagnés"),
+            mes("fact_multikills", "Clutchs 1v3+"),
+            mes("fact_multikills", "Multikills 3K+"),
+            mes("fact_multikills", "Aces"),
+            mes("fact_multikills", "Spikes plantés"),
+        ],
+        top,
+    )
+    duels.visuals += [
+        Visual(
+            "tableEx",
+            {
+                "Values": [
+                    PLAYER,
+                    mes("fact_multikills", "Clutchs gagnés"),
+                    mes("fact_multikills", "Clutchs 1v3+"),
+                    mes("fact_multikills", "Clutchs par map"),
+                    mes("fact_multikills", "3K"),
+                    mes("fact_multikills", "4K"),
+                    mes("fact_multikills", "Aces"),
+                ]
+            },
+            M,
+            body,
+            wide,
+            body_h,
+            title="Joueurs décisifs",
+            sort_by=mes("fact_multikills", "Clutchs gagnés"),
+        ),
+        Visual(
+            "clusteredBarChart",
+            {"Category": [AGENT], "Y": [mes("fact_multikills", "Clutchs par map")]},
+            M + wide + G,
+            body,
+            W - 2 * M - G - wide,
+            body_h,
+            title="Clutchs par map selon l'agent",
+            sort_by=mes("fact_multikills", "Clutchs par map"),
+        ),
+    ]
+
+    scores = Page("Scores et durée")
+    scores.visuals.append(page_title("Scores et durée des maps"))
+    scores.visuals += slicers((REGION, "Région"), (TIER, "Phase"))
+    scores.visuals += cards(
+        [
+            mes("fact_map_score", "Maps (scores)"),
+            mes("fact_map_score", "Durée moyenne (min)"),
+            mes("fact_map_score", "Prolongations %"),
+            mes("fact_map_score", "Écart de score moyen"),
+        ],
+        top,
+    )
+    scores.visuals += [
+        Visual(
+            "clusteredBarChart",
+            {"Category": [MAP], "Y": [mes("fact_map_score", "Durée moyenne (min)")]},
+            M,
+            body,
+            third,
+            body_h,
+            title="Durée moyenne par map (min)",
+            sort_by=mes("fact_map_score", "Durée moyenne (min)"),
+        ),
+        Visual(
+            "clusteredBarChart",
+            {"Category": [MAP], "Y": [mes("fact_map_score", "Prolongations %")]},
+            M + third + G,
+            body,
+            third,
+            body_h,
+            title="Maps les plus serrées (prolongations)",
+            sort_by=mes("fact_map_score", "Prolongations %"),
+        ),
+        Visual(
+            "lineChart",
+            {"Category": [TOURNOI], "Y": [mes("fact_map_score", "Rounds par map")]},
+            M + 2 * (third + G),
+            body,
+            third,
+            body_h,
+            title="Rounds par map au fil de la saison",
+            sort_by=TOURNOI,
+            sort_descending=False,
+        ),
+    ]
+
+    player = Page("Fiche joueur")
+    player.visuals.append(page_title("Fiche joueur"))
+    player.visuals += slicers((PLAYER, "Joueur"), (TIER, "Phase"))
+    player.visuals += cards(
+        [
+            mes("fact_player_map", "Maps joueur"),
+            mes("fact_player_map", "Rating moyen"),
+            mes("fact_player_map", "ACS moyen"),
+            mes("fact_player_map", "ADR moyen"),
+            mes("fact_player_map", "KAST %"),
+            mes("fact_player_map", "FK/FD"),
+        ],
+        top,
+    )
+    player.visuals += [
+        Visual(
+            "lineChart",
+            {"Category": [TOURNOI], "Y": [mes("fact_player_map", "Rating moyen")]},
+            M,
+            body,
+            half,
+            body_h,
+            title="Rating au fil de la saison",
+            sort_by=TOURNOI,
+            sort_descending=False,
+        ),
+        Visual(
+            "clusteredBarChart",
+            {"Category": [AGENT], "Y": [mes("fact_player_map", "Maps joueur")]},
+            M + half + G,
+            body,
+            half,
+            body_h,
+            title="Agents joués",
+            sort_by=mes("fact_player_map", "Maps joueur"),
+        ),
+    ]
+
+    team = Page("Fiche équipe")
+    team.visuals.append(page_title("Fiche équipe"))
+    team.visuals += slicers((TEAM, "Équipe"), (TIER, "Phase"))
+    team.visuals += cards(
+        [
+            mes("fact_match_team", "Matchs"),
+            mes("fact_match_team", "Winrate matchs %"),
+            mes("fact_match_team", "Maps gagnées %"),
+            mes("fact_eco", "Pistols gagnés %"),
+            mes("fact_eco", "Conversion éco %"),
+        ],
+        top,
+    )
+    team.visuals += [
+        Visual(
+            "clusteredBarChart",
+            {"Category": [MAP], "Y": [mes("fact_team_agent_map", "Winrate compo %")]},
+            M,
+            body,
+            third,
+            body_h,
+            title="Winrate par map",
+            sort_by=mes("fact_team_agent_map", "Winrate compo %"),
+        ),
+        Visual(
+            "clusteredBarChart",
+            {
+                "Category": [MAP],
+                "Y": [mes("fact_draft", "Actions de draft")],
+                "Series": [col("fact_draft", "action")],
+            },
+            M + third + G,
+            body,
+            third,
+            body_h,
+            title="Picks et bans de l'équipe",
+            sort_by=mes("fact_draft", "Actions de draft"),
+        ),
+        Visual(
+            "clusteredBarChart",
+            {"Category": [AGENT], "Y": [mes("fact_team_agent_map", "Maps avec l'agent")]},
+            M + 2 * (third + G),
+            body,
+            third,
+            body_h,
+            title="Agents les plus alignés",
+            sort_by=mes("fact_team_agent_map", "Maps avec l'agent"),
+        ),
+    ]
+    return [meta, maps, teams, players, duels, scores, player, team]
 
 
 # --------------------------------------------------------------------------- #
@@ -569,7 +850,7 @@ def main() -> None:
     parser.add_argument("--out", type=Path, default=OUT_DIR)
     args = parser.parse_args()
     folder = args.data_folder if args.data_folder.endswith(("\\", "/")) else args.data_folder + "\\"
-    root = write_project(build_project(folder), args.out, overwrite=True)
+    root = write_project(build_project(folder), args.out, overwrite=True, strict=True)
     print(f"Projet Power BI écrit dans {root}")
 
 

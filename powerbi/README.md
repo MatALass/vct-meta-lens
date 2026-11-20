@@ -26,7 +26,7 @@ pip install -r powerbi/requirements.txt
 python powerbi/build_report.py --data-folder "D:\mon\chemin\vct-meta-lens\data\model\"
 ```
 
-La CI régénère le projet et échoue si le dossier `VCTMetaLens/` ne correspond plus au script : on ne modifie donc pas les fichiers générés à la main.
+La CI régénère le projet et échoue si le dossier `VCTMetaLens/` ne correspond plus au script : on ne modifie donc pas les fichiers générés à la main. La génération est stricte : elle échoue si un visuel en chevauche un autre, dépasse de la page ou est trop petit pour afficher ses données.
 
 ## Pages
 
@@ -36,6 +36,10 @@ La CI régénère le projet et échoue si le dossier `VCTMetaLens/` ne correspon
 | Maps | Quelles maps favorisent l'attaque ou la défense ? | winrate ATK/DEF par map, méthodes de victoire des rounds, picks et bans |
 | Équipes | Qui gagne, et qui convertit les rounds éco ? | classement (winrate, maps, pistols, éco), taux de victoire par type d'achat |
 | Joueurs | Qui performe sur la durée ? | nuage Rating × ACS (10 maps minimum), classement des joueurs |
+| Duels et clutchs | Qui fait gagner les rounds serrés ? | clutchs (dont 1v3+), multikills, aces, spikes plantés, joueurs décisifs, clutchs par map selon l'agent |
+| Scores et durée | Quelles maps sont les plus longues et les plus serrées ? | durée moyenne, part de prolongations, écart de score, rounds par map au fil de la saison |
+| Fiche joueur | Le profil d'un joueur | segment Joueur, Rating, ACS, ADR, KAST, FK/FD, rating par tournoi, agents joués |
+| Fiche équipe | Le profil d'une équipe | segment Équipe, winrate, maps, pistols, éco, winrate par map, picks et bans, agents alignés |
 
 Les segments Région et Phase filtrent toutes les pages, via `dim_tournament`.
 

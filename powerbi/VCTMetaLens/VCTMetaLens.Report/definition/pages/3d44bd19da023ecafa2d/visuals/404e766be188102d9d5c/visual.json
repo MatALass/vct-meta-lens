@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "404e766be188102d9d5c",
+  "position": {
+    "x": 858.67,
+    "y": 204,
+    "z": 10000,
+    "width": 405.33,
+    "height": 500,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_agent"
+                    }
+                  },
+                  "Property": "agent_label"
+                }
+              },
+              "queryRef": "dim_agent.agent_label",
+              "nativeQueryRef": "agent_label"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_team_agent_map"
+                    }
+                  },
+                  "Property": "Maps avec l'agent"
+                }
+              },
+              "queryRef": "fact_team_agent_map.Maps avec l'agent",
+              "nativeQueryRef": "Maps avec l'agent"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_team_agent_map"
+                  }
+                },
+                "Property": "Maps avec l'agent"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Agents les plus alignés'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

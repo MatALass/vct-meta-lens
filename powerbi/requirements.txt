@@ -1,3 +1,4 @@
 # Génération du projet Power BI (python powerbi/build_report.py).
-# Commit de main qui inclut les thèmes et les titres (PR MatALass/pbip-generator#2).
-pbip-generator @ git+https://github.com/MatALass/pbip-generator@23066d66dd4018b9bc49d62f1ce22c094fe67d91
+# Commit qui corrige les segments et ajoute les contrôles de mise en page
+# (branche claude/slicers-layout-checks de MatALass/pbip-generator, à remplacer par le commit de main une fois mergée).
+pbip-generator @ git+https://github.com/MatALass/pbip-generator@2bc3cb45a65f45a750cf9d5170462185f7d8e4f8

@@ -97,3 +97,31 @@ relationship 1abd1017-c7cf-516e-914c-6eafc275fc41
 relationship 47d38071-e1fd-5e95-a72e-ac240b2fc428
 	fromColumn: fact_draft.map
 	toColumn: dim_map.map
+
+relationship d8c23846-e952-50fb-bd83-fd127b3a4d3e
+	fromColumn: fact_multikills.tournament
+	toColumn: dim_tournament.tournament
+
+relationship 1501a943-acc9-5873-becc-0400240a8f63
+	fromColumn: fact_multikills.map
+	toColumn: dim_map.map
+
+relationship fb9eb75a-fc9e-596e-94ff-73d5ea7626fa
+	fromColumn: fact_multikills.team
+	toColumn: dim_team.team
+
+relationship f5c09ad6-fdba-5693-bf14-54cb566bbd8e
+	fromColumn: fact_multikills.player
+	toColumn: dim_player.player
+
+relationship 26bb6b3b-1ecb-576f-aadd-5b1cd6a51242
+	fromColumn: fact_multikills.agent
+	toColumn: dim_agent.agent
+
+relationship 767b0985-e109-50d0-9b91-a5e348324f19
+	fromColumn: fact_map_score.tournament
+	toColumn: dim_tournament.tournament
+
+relationship c68eaa9b-bb8d-54ac-961c-af999b769574
+	fromColumn: fact_map_score.map
+	toColumn: dim_map.map

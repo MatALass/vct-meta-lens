@@ -1,0 +1,236 @@
+table fact_multikills
+	lineageTag: e515f8e6-dde1-537d-9c6a-95a06b79b0ef
+
+	measure 'Clutchs gagnés' =
+			SUM ( fact_multikills[1v1] ) + SUM ( fact_multikills[1v2] ) + SUM ( fact_multikills[1v3] )
+			    + SUM ( fact_multikills[1v4] ) + SUM ( fact_multikills[1v5] )
+		formatString: #,0
+		displayFolder: Duels
+		lineageTag: 3b0bc92b-f6d5-5f34-b8c3-5ccd8ca088fd
+
+	measure 'Clutchs 1v3+' = SUM ( fact_multikills[1v3] ) + SUM ( fact_multikills[1v4] ) + SUM ( fact_multikills[1v5] )
+		formatString: #,0
+		displayFolder: Duels
+		lineageTag: 333b1007-6c27-529e-8bc2-a31f6a1544be
+
+	/// Une ligne de fact_multikills = un joueur sur une map.
+	measure 'Clutchs par map' = DIVIDE ( [Clutchs gagnés], COUNTROWS ( fact_multikills ) )
+		formatString: 0.00
+		displayFolder: Duels
+		lineageTag: 421c32e0-3c60-57df-88dd-04f9273c0347
+
+	measure '2K' = SUM ( fact_multikills[2k] )
+		formatString: #,0
+		displayFolder: Duels
+		lineageTag: 12b0f612-a20a-5726-8d15-c441d022d709
+
+	measure '3K' = SUM ( fact_multikills[3k] )
+		formatString: #,0
+		displayFolder: Duels
+		lineageTag: 3460e43a-d086-5b80-a448-5c8123617949
+
+	measure '4K' = SUM ( fact_multikills[4k] )
+		formatString: #,0
+		displayFolder: Duels
+		lineageTag: 8809905b-6c6d-566f-86ea-20b80c9e6db5
+
+	measure Aces = SUM ( fact_multikills[5k] )
+		formatString: #,0
+		displayFolder: Duels
+		lineageTag: 0fa88739-b9a2-507d-b781-cf3d4ea65c78
+
+	measure 'Multikills 3K+' = [3K] + [4K] + [Aces]
+		formatString: #,0
+		displayFolder: Duels
+		lineageTag: bb58c442-8279-5ddf-8b1b-7159002ee649
+
+	measure 'Spikes plantés' = SUM ( fact_multikills[spike_plants] )
+		formatString: #,0
+		displayFolder: Duels
+		lineageTag: 3d6d45c9-56b4-54a0-b2c4-06dbbe8cb420
+
+	measure 'Spikes désamorcés' = SUM ( fact_multikills[spike_defuses] )
+		formatString: #,0
+		displayFolder: Duels
+		lineageTag: 9cb0f49d-30e5-58de-9b08-cbe05fac6a27
+
+	column tournament
+		dataType: string
+		isHidden
+		lineageTag: 59f1591e-e1a6-5b96-aed6-b1a5b6016b69
+		summarizeBy: none
+		sourceColumn: tournament
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage
+		dataType: string
+		lineageTag: 1bec3314-602b-5009-9047-8b05711a9976
+		summarizeBy: none
+		sourceColumn: stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_type
+		dataType: string
+		lineageTag: 32ce85ed-1ba7-565e-ab4b-aa2db151f950
+		summarizeBy: none
+		sourceColumn: match_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_name
+		dataType: string
+		lineageTag: f49594a8-9cfb-5f2c-8aa4-b059f2dba655
+		summarizeBy: none
+		sourceColumn: match_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column map
+		dataType: string
+		isHidden
+		lineageTag: bbaea7f0-9823-58a8-881a-97d072bed617
+		summarizeBy: none
+		sourceColumn: map
+
+		annotation SummarizationSetBy = Automatic
+
+	column team
+		dataType: string
+		isHidden
+		lineageTag: 1f81671b-74db-5fcf-9d22-af3f159cd963
+		summarizeBy: none
+		sourceColumn: team
+
+		annotation SummarizationSetBy = Automatic
+
+	column player
+		dataType: string
+		isHidden
+		lineageTag: 2f74259a-bb5a-54d1-b287-00647de12476
+		summarizeBy: none
+		sourceColumn: player
+
+		annotation SummarizationSetBy = Automatic
+
+	column agent
+		dataType: string
+		isHidden
+		lineageTag: 30fe7ea2-a989-5cfc-bc77-a7bc4638fee4
+		summarizeBy: none
+		sourceColumn: agent
+
+		annotation SummarizationSetBy = Automatic
+
+	column '2k'
+		dataType: double
+		isHidden
+		lineageTag: 99307258-33b3-5554-ae1c-278d655f4de4
+		summarizeBy: sum
+		sourceColumn: 2k
+
+		annotation SummarizationSetBy = Automatic
+
+	column '3k'
+		dataType: double
+		isHidden
+		lineageTag: 62484566-ce46-5a7d-b1a2-03abb2c08373
+		summarizeBy: sum
+		sourceColumn: 3k
+
+		annotation SummarizationSetBy = Automatic
+
+	column '4k'
+		dataType: double
+		isHidden
+		lineageTag: cc362b05-9f7a-5ef8-9c60-0a7ecfb57837
+		summarizeBy: sum
+		sourceColumn: 4k
+
+		annotation SummarizationSetBy = Automatic
+
+	column '5k'
+		dataType: double
+		isHidden
+		lineageTag: e4f4f554-8046-56ce-b95e-26399c869a89
+		summarizeBy: sum
+		sourceColumn: 5k
+
+		annotation SummarizationSetBy = Automatic
+
+	column '1v1'
+		dataType: double
+		isHidden
+		lineageTag: c1de3919-9627-58d0-bbfc-b1fd99672903
+		summarizeBy: sum
+		sourceColumn: 1v1
+
+		annotation SummarizationSetBy = Automatic
+
+	column '1v2'
+		dataType: double
+		isHidden
+		lineageTag: fa911b67-00fb-552b-9e83-72f2f3c2aec1
+		summarizeBy: sum
+		sourceColumn: 1v2
+
+		annotation SummarizationSetBy = Automatic
+
+	column '1v3'
+		dataType: double
+		isHidden
+		lineageTag: e22e69bc-f7c0-53e4-a2af-c8d20147e204
+		summarizeBy: sum
+		sourceColumn: 1v3
+
+		annotation SummarizationSetBy = Automatic
+
+	column '1v4'
+		dataType: double
+		isHidden
+		lineageTag: 4d5aae87-0126-52b2-82fc-d046f161069e
+		summarizeBy: sum
+		sourceColumn: 1v4
+
+		annotation SummarizationSetBy = Automatic
+
+	column '1v5'
+		dataType: double
+		isHidden
+		lineageTag: 2272b7bd-9131-5b96-b974-d2efd4b744df
+		summarizeBy: sum
+		sourceColumn: 1v5
+
+		annotation SummarizationSetBy = Automatic
+
+	column spike_plants
+		dataType: int64
+		isHidden
+		lineageTag: 8f8de0ca-27db-5f7c-b218-d8d7246a9bb0
+		summarizeBy: sum
+		sourceColumn: spike_plants
+
+		annotation SummarizationSetBy = Automatic
+
+	column spike_defuses
+		dataType: int64
+		isHidden
+		lineageTag: 78043b44-cede-51cd-b22c-f673ed4b6be4
+		summarizeBy: sum
+		sourceColumn: spike_defuses
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_multikills = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_multikills.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Selected Columns" = Table.SelectColumns(#"Promoted Headers", {"tournament", "stage", "match_type", "match_name", "map", "team", "player", "agent", "2k", "3k", "4k", "5k", "1v1", "1v2", "1v3", "1v4", "1v5", "spike_plants", "spike_defuses"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Selected Columns", {{"tournament", type text}, {"stage", type text}, {"match_type", type text}, {"match_name", type text}, {"map", type text}, {"team", type text}, {"player", type text}, {"agent", type text}, {"2k", type number}, {"3k", type number}, {"4k", type number}, {"5k", type number}, {"1v1", type number}, {"1v2", type number}, {"1v3", type number}, {"1v4", type number}, {"1v5", type number}, {"spike_plants", Int64.Type}, {"spike_defuses", Int64.Type}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

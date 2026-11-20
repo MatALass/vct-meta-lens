@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "a23bcf5efb71d806781b",
+  "position": {
+    "x": 16,
+    "y": 204,
+    "z": 9000,
+    "width": 616.0,
+    "height": 500,
+    "tabOrder": 9000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_tournament"
+                    }
+                  },
+                  "Property": "tournament_short"
+                }
+              },
+              "queryRef": "dim_tournament.tournament_short",
+              "nativeQueryRef": "tournament_short"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_player_map"
+                    }
+                  },
+                  "Property": "Rating moyen"
+                }
+              },
+              "queryRef": "fact_player_map.Rating moyen",
+              "nativeQueryRef": "Rating moyen"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dim_tournament"
+                  }
+                },
+                "Property": "tournament_short"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Rating au fil de la saison'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

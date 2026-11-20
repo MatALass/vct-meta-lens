@@ -1,0 +1,137 @@
+table fact_map_score
+	lineageTag: 25b572dc-79bd-5bfc-90fe-efaf4006fbfb
+
+	measure 'Maps (scores)' = COUNTROWS ( fact_map_score )
+		formatString: #,0
+		displayFolder: Maps
+		lineageTag: ec00b2b8-c9f4-520e-9ae1-b72cd6f00616
+
+	measure 'Durée moyenne (min)' = AVERAGE ( fact_map_score[duration_seconds] ) / 60
+		formatString: 0.0
+		displayFolder: Maps
+		lineageTag: e19f68da-096a-55d3-af1d-d2b8a74fa455
+
+	/// Part des maps allées en prolongation (au moins un round d'overtime).
+	measure 'Prolongations %' =
+			DIVIDE (
+			    COUNTROWS (
+			        FILTER (
+			            fact_map_score,
+			            fact_map_score[team_a_overtime_score] + fact_map_score[team_b_overtime_score] > 0
+			        )
+			    ),
+			    [Maps (scores)]
+			)
+		formatString: 0.0%
+		displayFolder: Maps
+		lineageTag: 7d467a8c-3dac-5165-879d-6341055a54c1
+
+	measure 'Écart de score moyen' = AVERAGEX ( fact_map_score, ABS ( fact_map_score[team_a_score] - fact_map_score[team_b_score] ) )
+		formatString: 0.0
+		displayFolder: Maps
+		lineageTag: 9766fedf-7c91-5c2d-b040-b372015769e2
+
+	measure 'Rounds par map' = AVERAGEX ( fact_map_score, fact_map_score[team_a_score] + fact_map_score[team_b_score] )
+		formatString: 0.0
+		displayFolder: Maps
+		lineageTag: c41b8beb-479b-59c2-9e71-6b95437d750c
+
+	column tournament
+		dataType: string
+		isHidden
+		lineageTag: a3049283-28b9-5a5e-b672-d7aab2d8a4d5
+		summarizeBy: none
+		sourceColumn: tournament
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage
+		dataType: string
+		lineageTag: 7de222ed-0d3a-5703-b51b-0a19d4002edf
+		summarizeBy: none
+		sourceColumn: stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_type
+		dataType: string
+		lineageTag: 500c4d91-738d-5693-994f-cda38269d3d7
+		summarizeBy: none
+		sourceColumn: match_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_name
+		dataType: string
+		lineageTag: 4cdeff0a-4ff9-59cd-84a2-0e2c8c6684b8
+		summarizeBy: none
+		sourceColumn: match_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column map
+		dataType: string
+		isHidden
+		lineageTag: e4cc4653-1f81-5ef7-b803-24773ce6556e
+		summarizeBy: none
+		sourceColumn: map
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_a_score
+		dataType: int64
+		isHidden
+		lineageTag: 8c25c2d4-4d56-548f-9d54-f4c9aa2acc83
+		summarizeBy: sum
+		sourceColumn: team_a_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_b_score
+		dataType: int64
+		isHidden
+		lineageTag: 5eb23584-dde5-5279-b0d9-fec2539f7ab0
+		summarizeBy: sum
+		sourceColumn: team_b_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_a_overtime_score
+		dataType: double
+		isHidden
+		lineageTag: af859189-5c7b-5858-97cb-865abd573063
+		summarizeBy: sum
+		sourceColumn: team_a_overtime_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_b_overtime_score
+		dataType: double
+		isHidden
+		lineageTag: 99bdd61b-9ef5-5c72-9a3c-a7d48223642b
+		summarizeBy: sum
+		sourceColumn: team_b_overtime_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_seconds
+		dataType: double
+		isHidden
+		lineageTag: d28292b9-273f-596c-bb77-21f08bb423cb
+		summarizeBy: sum
+		sourceColumn: duration_seconds
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_map_score = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_map_score.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Selected Columns" = Table.SelectColumns(#"Promoted Headers", {"tournament", "stage", "match_type", "match_name", "map", "team_a_score", "team_b_score", "team_a_overtime_score", "team_b_overtime_score", "duration_seconds"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Selected Columns", {{"tournament", type text}, {"stage", type text}, {"match_type", type text}, {"match_name", type text}, {"map", type text}, {"team_a_score", Int64.Type}, {"team_b_score", Int64.Type}, {"team_a_overtime_score", type number}, {"team_b_overtime_score", type number}, {"duration_seconds", type number}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "3e7344290803ac9a4f6d",
+  "position": {
+    "x": 16,
+    "y": 204,
+    "z": 8000,
+    "width": 405.33,
+    "height": 500,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_map"
+                    }
+                  },
+                  "Property": "map"
+                }
+              },
+              "queryRef": "dim_map.map",
+              "nativeQueryRef": "map"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_team_agent_map"
+                    }
+                  },
+                  "Property": "Winrate compo %"
+                }
+              },
+              "queryRef": "fact_team_agent_map.Winrate compo %",
+              "nativeQueryRef": "Winrate compo %"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_team_agent_map"
+                  }
+                },
+                "Property": "Winrate compo %"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Winrate par map'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

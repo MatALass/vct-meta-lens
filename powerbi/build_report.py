@@ -293,11 +293,11 @@ MEASURES: dict[str, list[Measure]] = {
             "Duels",
             "Une ligne de fact_multikills = un joueur sur une map.",
         ),
-        Measure("2K", "SUM ( fact_multikills[2k] )", "#,0", "Duels"),
-        Measure("3K", "SUM ( fact_multikills[3k] )", "#,0", "Duels"),
-        Measure("4K", "SUM ( fact_multikills[4k] )", "#,0", "Duels"),
+        Measure("Multikills 2K", "SUM ( fact_multikills[2k] )", "#,0", "Duels"),
+        Measure("Multikills 3K", "SUM ( fact_multikills[3k] )", "#,0", "Duels"),
+        Measure("Multikills 4K", "SUM ( fact_multikills[4k] )", "#,0", "Duels"),
         Measure("Aces", "SUM ( fact_multikills[5k] )", "#,0", "Duels"),
-        Measure("Multikills 3K+", "[3K] + [4K] + [Aces]", "#,0", "Duels"),
+        Measure("Multikills 3K+", "[Multikills 3K] + [Multikills 4K] + [Aces]", "#,0", "Duels"),
         Measure("Spikes plantés", "SUM ( fact_multikills[spike_plants] )", "#,0", "Duels"),
         Measure("Spikes désamorcés", "SUM ( fact_multikills[spike_defuses] )", "#,0", "Duels"),
     ],
@@ -406,6 +406,7 @@ def build_project(data_folder: str) -> Project:
         for col, _ in cols
         if col in DIM_KEYS
     ]
+    check_unique_names(tables)
     project = Project(NAME, tables, relationships, culture="fr-FR", data_folder=data_folder)
     project.theme = json.loads(THEME.read_text(encoding="utf-8"))
     project.pages = build_pages()
@@ -415,6 +416,29 @@ def build_project(data_folder: str) -> Project:
 # --------------------------------------------------------------------------- #
 # Pages (1280 x 720)
 # --------------------------------------------------------------------------- #
+def check_unique_names(tables: list[Table]) -> None:
+    """Échoue si deux objets du modèle portent le même nom.
+
+    Le moteur tabulaire compare les noms sans tenir compte de la casse : une
+    mesure '2K' et une colonne '2k' de la même table se heurtent, et Power BI
+    refuse d'ouvrir le projet. Les noms de mesures sont aussi uniques sur tout
+    le modèle.
+    """
+    errors: list[str] = []
+    seen_measures: dict[str, str] = {}
+    for table in tables:
+        seen_columns = {c.name.casefold(): c.name for c in table.columns}
+        for measure in table.measures:
+            key = measure.name.casefold()
+            if key in seen_columns:
+                errors.append(f"{table.name} : la mesure '{measure.name}' a le même nom que la colonne '{seen_columns[key]}'")
+            if key in seen_measures:
+                errors.append(f"la mesure '{measure.name}' existe déjà dans {seen_measures[key]}")
+            seen_measures[key] = table.name
+    if errors:
+        raise ValueError("Noms en double dans le modèle (casse ignorée) :\n  " + "\n  ".join(errors))
+
+
 def col(table: str, name: str) -> FieldRef:
     return FieldRef(table, name)
 
@@ -659,8 +683,8 @@ def build_pages() -> list[Page]:
                     mes("fact_multikills", "Clutchs gagnés"),
                     mes("fact_multikills", "Clutchs 1v3+"),
                     mes("fact_multikills", "Clutchs par map"),
-                    mes("fact_multikills", "3K"),
-                    mes("fact_multikills", "4K"),
+                    mes("fact_multikills", "Multikills 3K"),
+                    mes("fact_multikills", "Multikills 4K"),
                     mes("fact_multikills", "Aces"),
                 ]
             },

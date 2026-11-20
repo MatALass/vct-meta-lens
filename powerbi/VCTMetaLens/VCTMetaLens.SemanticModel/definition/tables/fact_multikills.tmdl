@@ -19,27 +19,27 @@ table fact_multikills
 		displayFolder: Duels
 		lineageTag: 421c32e0-3c60-57df-88dd-04f9273c0347
 
-	measure '2K' = SUM ( fact_multikills[2k] )
+	measure 'Multikills 2K' = SUM ( fact_multikills[2k] )
 		formatString: #,0
 		displayFolder: Duels
-		lineageTag: 12b0f612-a20a-5726-8d15-c441d022d709
+		lineageTag: a8f59cb9-ffa8-5534-8cfb-e12eddba21c9
 
-	measure '3K' = SUM ( fact_multikills[3k] )
+	measure 'Multikills 3K' = SUM ( fact_multikills[3k] )
 		formatString: #,0
 		displayFolder: Duels
-		lineageTag: 3460e43a-d086-5b80-a448-5c8123617949
+		lineageTag: a61d740f-57ce-573d-98ed-9db6e8050d3a
 
-	measure '4K' = SUM ( fact_multikills[4k] )
+	measure 'Multikills 4K' = SUM ( fact_multikills[4k] )
 		formatString: #,0
 		displayFolder: Duels
-		lineageTag: 8809905b-6c6d-566f-86ea-20b80c9e6db5
+		lineageTag: 2f31e651-4f40-528c-beb9-d79c289915ea
 
 	measure Aces = SUM ( fact_multikills[5k] )
 		formatString: #,0
 		displayFolder: Duels
 		lineageTag: 0fa88739-b9a2-507d-b781-cf3d4ea65c78
 
-	measure 'Multikills 3K+' = [3K] + [4K] + [Aces]
+	measure 'Multikills 3K+' = [Multikills 3K] + [Multikills 4K] + [Aces]
 		formatString: #,0
 		displayFolder: Duels
 		lineageTag: bb58c442-8279-5ddf-8b1b-7159002ee649

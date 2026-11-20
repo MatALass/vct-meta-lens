@@ -79,11 +79,11 @@
                       "Entity": "fact_multikills"
                     }
                   },
-                  "Property": "3K"
+                  "Property": "Multikills 3K"
                 }
               },
-              "queryRef": "fact_multikills.3K",
-              "nativeQueryRef": "3K"
+              "queryRef": "fact_multikills.Multikills 3K",
+              "nativeQueryRef": "Multikills 3K"
             },
             {
               "field": {
@@ -93,11 +93,11 @@
                       "Entity": "fact_multikills"
                     }
                   },
-                  "Property": "4K"
+                  "Property": "Multikills 4K"
                 }
               },
-              "queryRef": "fact_multikills.4K",
-              "nativeQueryRef": "4K"
+              "queryRef": "fact_multikills.Multikills 4K",
+              "nativeQueryRef": "Multikills 4K"
             },
             {
               "field": {
